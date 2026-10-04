@@ -42,10 +42,6 @@ export function Hero() {
             <span className="text-neutral-400 dark:text-neutral-600">{last}</span>
           </motion.h1>
 
-          <motion.p variants={item} className="mt-6 max-w-xl text-lg text-neutral-600 dark:text-neutral-400">
-            {t('heroTagline')}
-          </motion.p>
-
           <motion.div variants={item} className="mt-4 flex flex-col gap-1 font-mono text-sm text-neutral-500">
             <span>→ {t('heroRole1')}</span>
             <span>→ {t('heroRole2')}</span>

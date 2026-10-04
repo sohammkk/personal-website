@@ -11,7 +11,6 @@ export const site = {
   phone: '+49 176599 69725',
   location: 'Duisburg, Germany',
   // Path to a photo in /public (e.g. '/me.jpg') or a full URL.
-  // Leave empty to show a placeholder on the hero section.
   photo: '',
   socials: {
     github: 'https://github.com/sohammkk',
@@ -22,13 +21,11 @@ export const site = {
     de: 'https://assets.zyrosite.com/YrDW0JpewRCOjxNQ/soham_germancv-dmk8H2X17QeswQby.pdf',
   },
   // Last.fm powers the iPod widget (Apple Music can scrobble to Last.fm).
-  // Set VITE_LASTFM_USERNAME and VITE_LASTFM_API_KEY in your .env (see .env.example).
   lastfm: {
     username: import.meta.env.VITE_LASTFM_USERNAME ?? '',
     apiKey: import.meta.env.VITE_LASTFM_API_KEY ?? '',
   },
   // Twelve Data powers the live stock chart in the side quests.
-  // Set VITE_TWELVEDATA_API_KEY in your .env (see .env.example).
   twelveData: {
     apiKey: import.meta.env.VITE_TWELVEDATA_API_KEY ?? '',
   },
@@ -47,18 +44,14 @@ export const ui: Record<string, Localized> = {
   navCv: { en: 'CV', de: 'Lebenslauf' },
   navHome: { en: 'Home', de: 'Start' },
   heroHello: { en: "Hello, I'm", de: 'Hallo, ich bin' },
-  heroTagline: {
-    en: 'Computer engineering student building clean things for the web and the cloud.',
-    de: 'Computer-Engineering-Student, der saubere Dinge für das Web und die Cloud baut.',
-  },
   heroRole1: { en: 'B.Sc. Computer Engineering @ University of Duisburg-Essen', de: 'B.Sc. Computer Engineering @ Universität Duisburg-Essen' },
   heroRole2: { en: 'Working Student in IT Architecture @ Uniper SE', de: 'Werkstudent IT-Architektur @ Uniper SE' },
   heroCta: { en: 'Get in touch', de: 'Kontakt aufnehmen' },
-  heroCv: { en: 'View CV', de: 'Lebenslauf ansehen' },
+  heroCv: { en: 'Download CV', de: 'Lebenslauf herunterladen' },
   aboutTitle: { en: 'About me', de: 'Über mich' },
   aboutText: {
-    en: "I'm a computer engineering student at the University of Duisburg-Essen with a passion for cloud infrastructure, web development and clean architecture. Currently working at Uniper SE on IT architecture — from Terraform-provisioned Azure infrastructure to Vue.js apps.",
-    de: 'Ich bin Computer-Engineering-Student an der Universität Duisburg-Essen mit einer Leidenschaft für Cloud-Infrastruktur, Webentwicklung und saubere Architektur. Derzeit arbeite ich bei Uniper SE in der IT-Architektur — von Terraform-provisionierter Azure-Infrastruktur bis zu Vue.js-Apps.',
+    en: "I'm a computer engineering student at the University of Duisburg-Essen with a passion for cloud infrastructure, web development and scalable architecture. Currently working at Uniper SE in the IT architecture team.",
+    de: 'Ich bin Computer-Engineering-Student an der Universität Duisburg-Essen mit einer Leidenschaft für Cloud-Infrastruktur, Webentwicklung und skalierbare Architektur. Derzeit arbeite ich bei Uniper SE im IT-Architektur-Team.',
   },
   experienceTitle: { en: 'Experience', de: 'Erfahrung' },
   educationTitle: { en: 'Education', de: 'Bildung' },
@@ -78,8 +71,8 @@ export const ui: Record<string, Localized> = {
   cvDownload: { en: 'Download PDF', de: 'PDF herunterladen' },
   cvCtaTitle: { en: 'Want the full story?', de: 'Die ganze Geschichte?' },
   cvCtaText: {
-    en: 'Experience, projects, skills and education — all on one page.',
-    de: 'Erfahrung, Projekte, Fähigkeiten und Bildung — alles auf einer Seite.',
+    en: 'Experience, projects, skills and education',
+    de: 'Erfahrung, Projekte, Fähigkeiten und Bildung',
   },
   cvCtaBtn: { en: 'View my CV', de: 'Zum Lebenslauf' },
   contactTitle: { en: "Let's connect", de: 'Kontakt aufnehmen' },
@@ -104,14 +97,14 @@ export const ui: Record<string, Localized> = {
   // Stock market / side quest interlude
   marketCaption: { en: 'side quests: off the keyboard', de: 'Nebenquests: abseits der Tastatur' },
   questChartLoading: { en: 'fetching prices…', de: 'Kurse werden geladen…' },
-  questChartNote: { en: 'live daily chart · twelve data api', de: 'Live-Tageschart · Twelve-Data-API' },
-  questChartOffline: { en: 'api unreachable — showing demo data', de: 'API nicht erreichbar — Demodaten' },
+  questChartNote: { en: 'live daily chart, using twelve data api', de: 'Live-Tageschart, Twelve-Data-API genutzt' },
+  questChartOffline: { en: 'api unreachable, showing demo data', de: 'API nicht erreichbar, Demodaten angezeigt' },
   questChartNoKey: {
-    en: 'demo data — set VITE_TWELVEDATA_API_KEY in .env for live prices',
-    de: 'Demodaten — setze VITE_TWELVEDATA_API_KEY in .env für Live-Kurse',
+    en: 'demo data',
+    de: 'Demodaten',
   },
   questRallyTitle: { en: 'padel rally', de: 'Padel-Rallye' },
-  questRallyHint: { en: 'move the racket — catch every bounce', de: 'bewege den Schläger — triff jeden Ball' },
+  questRallyHint: { en: 'move the racket and catch every bounce!', de: 'bewege den Schläger und triff jeden Ball!' },
   questRallyServe: { en: 'tap to serve', de: 'tippe zum Aufschlag' },
   questRallyMiss: { en: 'missed!', de: 'daneben!' },
   questRallyBest: { en: 'best', de: 'Rekord' },

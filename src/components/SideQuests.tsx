@@ -11,6 +11,18 @@ import { site } from '../content'
 const STOCKS = ['NVDA', 'AAPL', 'MSFT', 'SPY'] as const
 type Symbol = (typeof STOCKS)[number]
 
+// Chart range presets. `apiInterval` is the Twelve Data bar granularity;
+// `outputsize` controls how far back the request reaches. Credit cost is
+// 1 per symbol per request regardless of interval, so these are all cheap.
+const RANGES = [
+  { key: '1D', label: '1D', apiInterval: '1day', outputsize: 60 },
+  { key: '1W', label: '1W', apiInterval: '1week', outputsize: 52 },
+  { key: '1M', label: '1M', apiInterval: '1month', outputsize: 36 },
+  { key: '1Y', label: '1Y', apiInterval: '1day', outputsize: 252 },
+  { key: 'ALL', label: 'All', apiInterval: '1month', outputsize: 240 },
+] as const
+type RangeKey = (typeof RANGES)[number]['key']
+
 interface PricePoint {
   date: Date
   value: number
@@ -36,7 +48,8 @@ function fmtPrice(v: number) {
   return `$${v.toLocaleString('en-US', { maximumFractionDigits: v < 10 ? 2 : v < 1000 ? 2 : 0 })}`
 }
 
-function fmtDate(d: Date) {
+function fmtDate(d: Date, range: RangeKey) {
+  if (range === '1M' || range === 'ALL') return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' })
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
@@ -44,17 +57,20 @@ function MarketChart() {
   const { t } = useApp()
   const reduce = useReducedMotion()
   const [active, setActive] = useState<Symbol>('NVDA')
-  const [cache, setCache] = useState<Partial<Record<Symbol, PricePoint[]>>>({})
+  const [range, setRange] = useState<RangeKey>('1D')
+  const [cache, setCache] = useState<Partial<Record<string, PricePoint[]>>>({})
   const [failed, setFailed] = useState(false)
   const [hover, setHover] = useState<number | null>(null)
   const hasKey = site.twelveData.apiKey.length > 0
+  const cacheKey = `${active}:${range}`
+  const meta = RANGES.find((r) => r.key === range)!
 
   useEffect(() => {
-    if (!hasKey || cache[active]) return
+    if (!hasKey || cache[cacheKey]) return
     let cancelled = false
     setFailed(false)
     fetch(
-      `https://api.twelvedata.com/time_series?symbol=${active}&interval=1day&outputsize=60&apikey=${site.twelveData.apiKey}`,
+      `https://api.twelvedata.com/time_series?symbol=${active}&interval=${meta.apiInterval}&outputsize=${meta.outputsize}&apikey=${site.twelveData.apiKey}`,
     )
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
@@ -66,7 +82,7 @@ function MarketChart() {
         const pts = d.values
           .map((v) => ({ date: new Date(v.datetime), value: parseFloat(v.close) }))
           .reverse()
-        setCache((c) => ({ ...c, [active]: pts }))
+        setCache((c) => ({ ...c, [cacheKey]: pts }))
       })
       .catch(() => {
         if (!cancelled) setFailed(true)
@@ -74,10 +90,10 @@ function MarketChart() {
     return () => {
       cancelled = true
     }
-  }, [active, cache, hasKey])
+  }, [active, range, cacheKey, cache, hasKey, meta.apiInterval, meta.outputsize])
 
-  const data = cache[active] ?? FALLBACK_PRICES
-  const loading = hasKey && !cache[active] && !failed
+  const data = cache[cacheKey] ?? FALLBACK_PRICES
+  const loading = hasKey && !cache[cacheKey] && !failed
 
   const { points, path, areaPath, yTicks, xTicks } = useMemo(() => {
     const values = data.map((p) => p.value)
@@ -96,7 +112,7 @@ function MarketChart() {
       return { v, y: M.top + PLOT_H - ((v - min) / span) * PLOT_H }
     })
     const tickIdx = [0, Math.floor((data.length - 1) / 3), Math.floor(((data.length - 1) * 2) / 3), data.length - 1]
-    const ticksX = tickIdx.map((i) => ({ label: fmtDate(data[i].date), x: pts[i].x }))
+    const ticksX = tickIdx.map((i) => ({ label: fmtDate(data[i].date, range), x: pts[i].x }))
     return {
       points: pts,
       path: line,
@@ -104,7 +120,7 @@ function MarketChart() {
       yTicks: ticksY,
       xTicks: ticksX,
     }
-  }, [data])
+  }, [data, range])
 
   const delta = ((data[data.length - 1].value - data[0].value) / data[0].value) * 100
   const up = delta >= 0
@@ -124,23 +140,41 @@ function MarketChart() {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
-      {/* ticker chips + live readout */}
+      {/* ticker chips + interval switcher + live readout */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-5 py-3 dark:border-neutral-800">
-        <div className="flex gap-1.5">
-          {STOCKS.map((s) => (
-            <button
-              key={s}
-              onClick={() => setActive(s)}
-              aria-pressed={active === s}
-              className={`rounded-full px-3 py-1 font-mono text-xs transition-colors ${
-                active === s
-                  ? 'bg-accent text-white'
-                  : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-white'
-              }`}
-            >
-              {s}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex gap-1.5">
+            {STOCKS.map((s) => (
+              <button
+                key={s}
+                onClick={() => setActive(s)}
+                aria-pressed={active === s}
+                className={`rounded-full px-3 py-1 font-mono text-xs transition-colors ${
+                  active === s
+                    ? 'bg-accent text-white'
+                    : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-white'
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          <div className="flex overflow-hidden rounded-full border border-neutral-300 dark:border-neutral-700">
+            {RANGES.map((r) => (
+              <button
+                key={r.key}
+                onClick={() => setRange(r.key)}
+                aria-pressed={range === r.key}
+                className={`px-2.5 py-1 font-mono text-[11px] transition-colors ${
+                  range === r.key
+                    ? 'bg-accent text-white'
+                    : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-white'
+                }`}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
         </div>
         <span className="font-mono text-xs text-neutral-500">
           {loading ? (
@@ -216,7 +250,7 @@ function MarketChart() {
 
           {/* area + price line */}
           <motion.path
-            key={`area-${active}-${String(!!cache[active])}`}
+            key={`area-${cacheKey}-${String(!!cache[cacheKey])}`}
             d={areaPath}
             fill="url(#chart-fill)"
             stroke="none"
@@ -225,7 +259,7 @@ function MarketChart() {
             transition={{ duration: 1, delay: 0.5 }}
           />
           <motion.path
-            key={`line-${active}-${String(!!cache[active])}`}
+            key={`line-${cacheKey}-${String(!!cache[cacheKey])}`}
             d={path}
             fill="none"
             stroke="var(--color-accent)"

@@ -31,7 +31,7 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  // The penalty gate only locks the home page — the CV stays reachable for people in a hurry.
+  // The penalty gate only locks the home page, the CV stays reachable for people in a hurry.
   const gated = route === 'home' && !unlocked
 
   useEffect(() => {
