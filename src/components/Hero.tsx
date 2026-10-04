@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowDown, FileText, Mail } from 'lucide-react'
+import { ArrowDown, FileText, Mail, User } from 'lucide-react'
 import { useApp } from '../AppContext'
 import { site } from '../content'
 
@@ -26,45 +26,62 @@ export function Hero() {
         variants={container}
         initial={reduce ? false : 'hidden'}
         animate="show"
-        className="relative mx-auto w-full max-w-5xl px-6 pt-16"
+        className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 pt-16 lg:grid-cols-[1.3fr_1fr]"
       >
-        <motion.p variants={item} className="text-accent mb-4 font-mono text-sm tracking-widest uppercase">
-          {t('heroHello')}
-        </motion.p>
+        <div>
+          <motion.p variants={item} className="text-accent mb-4 font-mono text-sm tracking-widest uppercase">
+            {t('heroHello')}
+          </motion.p>
 
-        <motion.h1
+          <motion.h1
+            variants={item}
+            className="font-display text-5xl leading-none font-bold tracking-tight sm:text-7xl lg:text-7xl"
+          >
+            {first}
+            <br />
+            <span className="text-neutral-400 dark:text-neutral-600">{last}</span>
+          </motion.h1>
+
+          <motion.p variants={item} className="mt-6 max-w-xl text-lg text-neutral-600 dark:text-neutral-400">
+            {t('heroTagline')}
+          </motion.p>
+
+          <motion.div variants={item} className="mt-4 flex flex-col gap-1 font-mono text-sm text-neutral-500">
+            <span>→ {t('heroRole1')}</span>
+            <span>→ {t('heroRole2')}</span>
+          </motion.div>
+
+          <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={`mailto:${site.email}`}
+              className="bg-accent hover:bg-accent-dim inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
+            >
+              <Mail size={16} /> {t('heroCta')}
+            </a>
+            <a
+              href={site.cv[lang]}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold transition-all hover:scale-[1.03] hover:border-neutral-500 active:scale-[0.98] dark:border-neutral-700 dark:hover:border-neutral-400"
+            >
+              <FileText size={16} /> {t('heroCv')}
+            </a>
+          </motion.div>
+        </div>
+
+        {/* personal photo (placeholder until one is set in content.ts) */}
+        <motion.div
           variants={item}
-          className="font-display text-5xl leading-none font-bold tracking-tight sm:text-7xl lg:text-8xl"
+          className="relative mx-auto aspect-square w-full max-w-xs overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900"
         >
-          {first}
-          <br />
-          <span className="text-neutral-400 dark:text-neutral-600">{last}</span>
-        </motion.h1>
-
-        <motion.p variants={item} className="mt-6 max-w-xl text-lg text-neutral-600 dark:text-neutral-400">
-          {t('heroTagline')}
-        </motion.p>
-
-        <motion.div variants={item} className="mt-4 flex flex-col gap-1 font-mono text-sm text-neutral-500">
-          <span>→ {t('heroRole1')}</span>
-          <span>→ {t('heroRole2')}</span>
-        </motion.div>
-
-        <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
-          <a
-            href={`mailto:${site.email}`}
-            className="bg-accent hover:bg-accent-dim inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
-          >
-            <Mail size={16} /> {t('heroCta')}
-          </a>
-          <a
-            href={site.cv[lang]}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold transition-all hover:scale-[1.03] hover:border-neutral-500 active:scale-[0.98] dark:border-neutral-700 dark:hover:border-neutral-400"
-          >
-            <FileText size={16} /> {t('heroCv')}
-          </a>
+          {site.photo ? (
+            <img src={site.photo} alt={site.name} className="h-full w-full object-cover" />
+          ) : (
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600">
+              <User size={40} strokeWidth={1.2} />
+              <span className="font-mono text-xs">{'// photo coming soon'}</span>
+            </div>
+          )}
         </motion.div>
       </motion.div>
 

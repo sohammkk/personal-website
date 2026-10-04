@@ -37,11 +37,10 @@ export function Nav({ route }: { route: 'home' | 'cv' }) {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200/60 bg-neutral-50/80 backdrop-blur-md dark:border-neutral-800/60 dark:bg-neutral-950/80">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200/60 bg-neutral-50/80 font-mono backdrop-blur-md dark:border-neutral-800/60 dark:bg-neutral-950/80">
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <a href="#/" className="font-display text-lg font-bold tracking-tight">
-          {site.name.split(' ')[0].toLowerCase()}
-          <span className="text-accent">.</span>
+        <a href="#/" className="text-accent text-sm font-semibold tracking-tight sm:text-base">
+          {site.name}
         </a>
 
         <div className="hidden items-center gap-6 md:flex">

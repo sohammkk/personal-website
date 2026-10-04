@@ -10,6 +10,9 @@ export const site = {
   email: 'sohamkumthekarde@gmail.com',
   phone: '+49 176599 69725',
   location: 'Duisburg, Germany',
+  // Path to a photo in /public (e.g. '/me.jpg') or a full URL.
+  // Leave empty to show a placeholder on the hero section.
+  photo: '',
   socials: {
     github: 'https://github.com/sohammkk',
     linkedin: 'https://www.linkedin.com/in/soham-kumthekar-b95aba260/',
@@ -60,6 +63,9 @@ export const ui: Record<string, Localized> = {
   experienceTitle: { en: 'Experience', de: 'Erfahrung' },
   educationTitle: { en: 'Education', de: 'Bildung' },
   projectsTitle: { en: 'Projects', de: 'Projekte' },
+  repoPrivate: { en: 'Private repo', de: 'Privates Repo' },
+  repoSoon: { en: 'Coming soon', de: 'Demnächst' },
+  repoView: { en: 'View repo', de: 'Repo ansehen' },
   skillsTitle: { en: 'Skills & Technologies', de: 'Fähigkeiten & Technologien' },
   languagesTitle: { en: 'Languages', de: 'Sprachen' },
   volunteeringTitle: { en: 'Volunteering', de: 'Ehrenamt' },
@@ -244,6 +250,13 @@ export interface ProjectItem {
   description: Localized
   period: Localized
   tags: string[]
+  // Path to an image in /public (e.g. '/projects/raytracer.png') or a full URL.
+  // Leave empty to show a placeholder.
+  image: string
+  // GitHub repo URL. Leave empty + set repoStatus to show "private repo" or
+  // "coming soon" instead of a link.
+  repo: string
+  repoStatus: 'private' | 'soon'
 }
 
 export const projects: ProjectItem[] = [
@@ -255,6 +268,9 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Jun 2026 – Sep 2026', de: 'Jun 2026 – Sep 2026' },
     tags: ['Python', 'ML', 'Security'],
+    image: '',
+    repo: '',
+    repoStatus: 'private',
   },
   {
     title: { en: 'iseportal.com', de: 'iseportal.com' },
@@ -264,6 +280,9 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Jun 2025 – Apr 2026', de: 'Jun 2025 – Apr 2026' },
     tags: ['TypeScript', 'PostgreSQL', 'Next.js'],
+    image: '',
+    repo: '',
+    repoStatus: 'private',
   },
   {
     title: { en: 'Raytracer', de: 'Raytracer' },
@@ -273,6 +292,9 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Oct 2023 – Jan 2024', de: 'Okt 2023 – Jan 2024' },
     tags: ['C++', 'OOP', 'Graphics'],
+    image: '',
+    repo: '',
+    repoStatus: 'soon',
   },
   {
     title: { en: 'CNN Digit Recognition', de: 'CNN-Ziffernerkennung' },
@@ -282,6 +304,9 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Apr 2024 – Jun 2024', de: 'Apr 2024 – Jun 2024' },
     tags: ['MATLAB', 'CNN', 'MNIST'],
+    image: '',
+    repo: '',
+    repoStatus: 'soon',
   },
 ]
 

@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, ExternalLink, Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowRight, ExternalLink, Github, Linkedin, Lock, Mail, MapPin, Phone } from 'lucide-react'
 import { useApp } from '../AppContext'
 import {
   certifications,
@@ -124,24 +124,61 @@ export function Projects() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: i * 0.08 }}
             whileHover={reduce ? undefined : { y: -6 }}
-            className="group flex flex-col rounded-2xl border border-neutral-200 bg-white p-6 transition-shadow hover:shadow-xl dark:border-neutral-800 dark:bg-neutral-900"
+            className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-shadow hover:shadow-xl dark:border-neutral-800 dark:bg-neutral-900"
           >
-            <p className="font-mono text-xs text-neutral-500">{p.period[lang]}</p>
-            <h3 className="font-display group-hover:text-accent mt-1 text-lg font-semibold transition-colors">
-              {p.title[lang]}
-            </h3>
-            <p className="mt-2 flex-1 text-sm text-neutral-600 dark:text-neutral-400">
-              {p.description[lang]}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {p.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-accent/10 text-accent-dim dark:text-accent rounded-full px-2.5 py-0.5 font-mono text-xs"
-                >
-                  {tag}
+            {/* project image (placeholder until one is set in content.ts) */}
+            <div className="hero-grid relative aspect-video w-full overflow-hidden border-b border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-800/50">
+              {p.image ? (
+                <img
+                  src={p.image}
+                  alt={p.title[lang]}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center font-mono text-xs text-neutral-400 dark:text-neutral-600">
+                  {'// image coming soon'}
                 </span>
-              ))}
+              )}
+            </div>
+
+            <div className="flex flex-1 flex-col p-6">
+              <p className="font-mono text-xs text-neutral-500">{p.period[lang]}</p>
+              <h3 className="font-display group-hover:text-accent mt-1 text-lg font-semibold transition-colors">
+                {p.title[lang]}
+              </h3>
+              <p className="mt-2 flex-1 text-sm text-neutral-600 dark:text-neutral-400">
+                {p.description[lang]}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {p.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-accent/10 text-accent-dim dark:text-accent rounded-full px-2.5 py-0.5 font-mono text-xs"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* repo link or status */}
+              <div className="mt-4 border-t border-neutral-200 pt-4 dark:border-neutral-800">
+                {p.repo ? (
+                  <a
+                    href={p.repo}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-accent inline-flex items-center gap-1.5 font-mono text-xs text-neutral-500 transition-colors"
+                  >
+                    <Github size={14} /> {t('repoView')}
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 font-mono text-xs text-neutral-400 dark:text-neutral-600">
+                    {p.repoStatus === 'private' ? <Lock size={13} /> : <Github size={13} />}
+                    {p.repoStatus === 'private' ? t('repoPrivate') : t('repoSoon')}
+                  </span>
+                )}
+              </div>
             </div>
           </motion.div>
         ))}
@@ -153,19 +190,24 @@ export function Projects() {
 function SkillBar({ name, percent, delay }: { name: string; percent: number; delay: number }) {
   const reduce = useReducedMotion()
   return (
-    <div>
-      <div className="mb-1 flex items-baseline justify-between text-sm">
-        <span>{name}</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
-        <motion.div
-          className="bg-accent h-full rounded-full"
-          initial={reduce ? { width: `${percent}%` } : { width: 0 }}
-          whileInView={{ width: `${percent}%` }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.8, delay, ease: 'easeOut' }}
-        />
-      </div>
+    <div className="w-full">
+      <p className="mb-1 text-sm">{name}</p>
+      {/* The full-width track observes the viewport (a 0-width bar can't be
+          reliably detected on mobile), and the fill animates via scaleX. */}
+      <motion.div
+        className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800"
+        initial={reduce ? 'show' : 'hidden'}
+        whileInView="show"
+        viewport={{ once: true, amount: 0.5 }}
+      >
+        <div className="h-full" style={{ width: `${percent}%` }}>
+          <motion.div
+            className="bg-accent h-full w-full origin-left rounded-full"
+            variants={{ hidden: { scaleX: 0 }, show: { scaleX: 1 } }}
+            transition={{ duration: 0.8, delay, ease: 'easeOut' }}
+          />
+        </div>
+      </motion.div>
     </div>
   )
 }
