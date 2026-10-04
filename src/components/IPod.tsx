@@ -18,6 +18,30 @@ const DEMO_TRACK: Track = {
   nowPlaying: false,
 }
 
+// Last.fm's default "no artwork" placeholder image (a gray star icon).
+// When this hash shows up, treat it the same as a missing image.
+const LASTFM_PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f'
+
+function isUsableImage(url?: string): url is string {
+  return !!url && !url.includes(LASTFM_PLACEHOLDER_HASH)
+}
+
+/** Last.fm no longer serves real cover art, so fall back to iTunes' free, key-less search API. */
+async function fetchItunesArtwork(artist: string, track: string): Promise<string | undefined> {
+  try {
+    const term = encodeURIComponent(`${artist} ${track}`)
+    const url = `https://itunes.apple.com/search?term=${term}&media=music&entity=song&limit=1`
+    const res = await fetch(url)
+    if (!res.ok) return undefined
+    const data = await res.json()
+    const artwork: string | undefined = data?.results?.[0]?.artworkUrl100
+    // Request a larger image than the default 100x100 thumbnail.
+    return artwork?.replace('100x100bb', '300x300bb')
+  } catch {
+    return undefined
+  }
+}
+
 async function fetchTrack(): Promise<Track | null> {
   const { username, apiKey } = site.lastfm
   if (!username || !apiKey) return null
@@ -29,11 +53,19 @@ async function fetchTrack(): Promise<Track | null> {
   const data = await res.json()
   const raw = data?.recenttracks?.track?.[0]
   if (!raw) return null
+
+  const name = raw.name
+  const artist = raw.artist?.['#text'] ?? ''
+  let image = raw.image?.find((i: { size: string }) => i.size === 'extralarge')?.['#text']
+  if (!isUsableImage(image)) {
+    image = await fetchItunesArtwork(artist, name)
+  }
+
   return {
-    name: raw.name,
-    artist: raw.artist?.['#text'] ?? '',
+    name,
+    artist,
     album: raw.album?.['#text'],
-    image: raw.image?.find((i: { size: string }) => i.size === 'large')?.['#text'],
+    image,
     nowPlaying: raw['@attr']?.nowplaying === 'true',
   }
 }
