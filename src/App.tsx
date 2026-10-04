@@ -5,7 +5,7 @@ import { Hero } from './components/Hero'
 import { PenaltyGame } from './components/PenaltyGame'
 import { SideQuests } from './components/SideQuests'
 import { CvPage } from './components/CvPage'
-import { About, CvCta, Footer } from './components/Sections'
+import { About, Contact, CvCta, Footer } from './components/Sections'
 
 type Route = 'home' | 'cv'
 
@@ -66,6 +66,7 @@ export default function App() {
           <About />
           <SideQuests onReplay={replay} />
           <CvCta />
+          <Contact />
         </main>
       ) : (
         <CvPage />
