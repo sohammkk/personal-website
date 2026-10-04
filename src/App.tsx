@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Nav } from './components/Nav'
 import { Hero } from './components/Hero'
 import { PenaltyGame } from './components/PenaltyGame'
-import { SideQuests } from './components/MarketPulse'
+import { SideQuests } from './components/SideQuests'
 import { CvPage } from './components/CvPage'
 import { About, CvCta, Footer } from './components/Sections'
 
