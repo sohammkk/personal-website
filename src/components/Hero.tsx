@@ -29,6 +29,9 @@ export function Hero() {
         className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 pt-16 lg:grid-cols-[1.3fr_1fr]"
       >
         <div>
+          <motion.p variants={item} className="text-accent mb-3 font-mono text-sm tracking-widest opacity-80">
+            ~/{site.name.split(' ')[0].toLowerCase()}
+          </motion.p>
           <motion.p variants={item} className="text-accent mb-4 font-mono text-sm tracking-widest uppercase">
             {t('heroHello')}
           </motion.p>
@@ -39,7 +42,7 @@ export function Hero() {
           >
             {first}
             <br />
-            <span className="text-neutral-400 dark:text-neutral-600">{last}</span>
+            {last}
           </motion.h1>
 
           <motion.div variants={item} className="mt-4 flex flex-col gap-1 font-mono text-sm text-neutral-500">

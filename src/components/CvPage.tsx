@@ -26,7 +26,7 @@ export function CvPage() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-5xl px-6 py-20"
         >
-          <p className="text-accent mb-3 font-mono text-sm tracking-widest uppercase">
+          <p className="text-accent mb-3 font-mono text-sm tracking-widest">
             ~/{site.name.split(' ')[0].toLowerCase()}/cv
           </p>
           <h1 className="font-display text-4xl font-bold tracking-tight sm:text-6xl">
@@ -35,7 +35,7 @@ export function CvPage() {
           <p className="mt-4 max-w-xl text-lg text-neutral-600 dark:text-neutral-400">
             {t('cvTagline')}
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex-wrap items-center gap-3">
             {(['en', 'de'] as const).map((l) => (
               <a
                 key={l}
@@ -51,9 +51,8 @@ export function CvPage() {
                 <FileText size={16} /> {t('cvDownload')} ({l.toUpperCase()})
               </a>
             ))}
-
             {/* socials */}
-            <div className="ml-1 flex gap-2">
+            <div className="mt-8 flex gap-2">
               {[
                 { href: site.socials.github, icon: Github, label: 'GitHub' },
                 { href: site.socials.linkedin, icon: Linkedin, label: 'LinkedIn' },

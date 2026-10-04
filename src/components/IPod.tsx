@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Music2, SkipBack, SkipForward, Play } from 'lucide-react'
 import { useApp } from '../AppContext'
 import { site } from '../content'
@@ -91,10 +91,60 @@ function Equalizer({ playing }: { playing: boolean }) {
   )
 }
 
+const NOTE_CHARS = ['♪', '♫', '♩', '♬']
+
+interface NoteBurst {
+  id: number
+  char: string
+  x: number
+}
+
+/** A handful of minimalistic notes that pop up and fade when the iPod is clicked */
+function NoteBurst({ bursts }: { bursts: NoteBurst[] }) {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-visible" aria-hidden>
+      <AnimatePresence>
+        {bursts.map((b) => (
+          <motion.span
+            key={b.id}
+            className="text-accent absolute top-1/2 left-1/2 text-xl"
+            initial={{ opacity: 0, y: 0, x: b.x, scale: 0.6 }}
+            animate={{ opacity: [0, 1, 0], y: -70, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.1, ease: 'easeOut' }}
+          >
+            {b.char}
+          </motion.span>
+        ))}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 export function IPod() {
   const { t } = useApp()
   const reduce = useReducedMotion()
   const [track, setTrack] = useState<Track>(DEMO_TRACK)
+  const [bursts, setBursts] = useState<NoteBurst[]>([])
+  const burstId = useRef(0)
+
+  const popNotes = () => {
+    if (reduce) return
+    const count = 3 + Math.floor(Math.random() * 2) // 3-4 notes
+    const fresh: NoteBurst[] = Array.from({ length: count }, () => {
+      burstId.current += 1
+      return {
+        id: burstId.current,
+        char: NOTE_CHARS[Math.floor(Math.random() * NOTE_CHARS.length)],
+        x: (Math.random() - 0.5) * 70,
+      }
+    })
+    setBursts((prev) => [...prev, ...fresh])
+    const ids = fresh.map((f) => f.id)
+    window.setTimeout(() => {
+      setBursts((prev) => prev.filter((b) => !ids.includes(b.id)))
+    }, 1200)
+  }
 
   useEffect(() => {
     let active = true
@@ -114,14 +164,17 @@ export function IPod() {
   }, [])
 
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, y: 30, rotate: -2 }}
-      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6 }}
-      whileHover={reduce ? undefined : { rotate: 1.5, scale: 1.02 }}
-      className="mx-auto w-64 rounded-[2rem] border border-neutral-300 bg-gradient-to-b from-white to-neutral-200 p-5 shadow-xl select-none dark:border-neutral-700 dark:from-neutral-800 dark:to-neutral-900"
-    >
+    <div>
+      <motion.div
+        initial={reduce ? false : { opacity: 0, y: 30, rotate: -2 }}
+        whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.6 }}
+        whileHover={reduce ? undefined : { rotate: 1.5, scale: 1.02 }}
+        onHoverStart={popNotes}
+        className="relative mx-auto w-64 cursor-pointer rounded-[2rem] border border-neutral-300 bg-gradient-to-b from-white to-neutral-200 p-5 shadow-xl select-none dark:border-neutral-700 dark:from-neutral-800 dark:to-neutral-900"
+      >
+        <NoteBurst bursts={bursts} />
       {/* Screen */}
       <div className="rounded-lg border border-neutral-400/40 bg-neutral-100 p-3 dark:bg-neutral-950">
         <div className="mb-2 flex items-center justify-between text-[10px] font-semibold tracking-wide text-neutral-500 uppercase">
@@ -162,6 +215,10 @@ export function IPod() {
         <Play size={13} className="absolute bottom-3 text-neutral-500" />
         <div className="h-12 w-12 rounded-full bg-white shadow dark:bg-neutral-700" />
       </div>
-    </motion.div>
+      </motion.div>
+      <p className="mt-3 text-center font-mono text-[11px] tracking-wide text-neutral-400 dark:text-neutral-600">
+        {t('ipodHoverHint')}
+      </p>
+    </div>
   )
 }

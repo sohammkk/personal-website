@@ -219,7 +219,7 @@ export function Skills() {
       <div className="space-y-12">
         {skills.map((cat) => (
           <div key={cat.category.en}>
-            <p className="mb-4 font-mono text-xs tracking-wide text-neutral-500 uppercase">
+            <p className="mb-4 font-mono text-sm tracking-wide text-neutral-600 dark:text-neutral-400 uppercase">
               <span className="text-accent">#</span> {cat.category[lang]}
             </p>
             <div className="grid gap-x-12 gap-y-4 sm:grid-cols-2">
@@ -272,7 +272,6 @@ export function Contact() {
   const { t } = useApp()
   return (
     <Section id="contact" title={t('contactTitle')}>
-      <p className="max-w-lg text-lg text-neutral-600 dark:text-neutral-400">{t('contactText')}</p>
       <div className="mt-8 flex flex-col gap-3 text-sm">
         <a href={`mailto:${site.email}`} className="hover:text-accent flex items-center gap-3 transition-colors">
           <Mail size={16} className="text-accent" /> {site.email}
@@ -317,7 +316,7 @@ export function CvCta() {
         transition={{ duration: 0.5 }}
         className="text-center"
       >
-        <p className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
+        <p className="font-mono text-sm text-neutral-600 dark:text-neutral-400">
           <span className="text-accent">{'// '}</span>
           {t('cvCtaText')}
         </p>
@@ -335,7 +334,7 @@ export function CvCta() {
   )
 }
 
-export function Footer({ onReplay }: { onReplay?: () => void }) {
+export function Footer({ onReplay: _onReplay }: { onReplay?: () => void }) {
   const { t } = useApp()
   const links = [
     { label: 'Email', href: `mailto:${site.email}` },
@@ -344,7 +343,7 @@ export function Footer({ onReplay }: { onReplay?: () => void }) {
   ]
   return (
     <footer className="border-t border-neutral-200 px-6 py-12 text-center dark:border-neutral-800">
-      <div className="mx-auto max-w-5xl space-y-3 text-sm text-neutral-500">
+      <div className="mx-auto max-w-5xl space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
         <p className="flex flex-wrap items-center justify-center gap-x-2">
           {links.map((l, i) => (
             <span key={l.label} className="flex items-center gap-x-2">
@@ -361,28 +360,14 @@ export function Footer({ onReplay }: { onReplay?: () => void }) {
           ))}
         </p>
 
-        <p>
-          {site.phone} · {site.location}
-        </p>
-
         <p>English · Deutsch · हिन्दी · मराठी</p>
 
-        <p className="pt-4 text-xs text-neutral-400 dark:text-neutral-600">
-          © {new Date().getFullYear()} {site.name}. {t('footerRights')}
+        <p>
+          <a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a> · {site.location}
         </p>
-        <p className="flex flex-wrap items-center justify-center gap-x-2 text-xs text-neutral-400 dark:text-neutral-600">
-          {t('builtWith')}
-          {onReplay && (
-            <>
-              <span aria-hidden>·</span>
-              <button
-                onClick={onReplay}
-                className="hover:text-accent underline decoration-neutral-300 underline-offset-4 transition-colors dark:decoration-neutral-700"
-              >
-                ⚽ {t('questReplayBtn')}
-              </button>
-            </>
-          )}
+
+        <p className="pt-4 text-xs text-neutral-600 dark:text-neutral-400">
+          © {new Date().getFullYear()} {site.name}. {t('footerRights')}
         </p>
       </div>
     </footer>

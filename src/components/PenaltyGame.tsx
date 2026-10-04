@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useApp } from '../AppContext'
+import { penaltyFacts } from '../content'
 
 type Zone = 'left' | 'center' | 'right'
 type Phase = 'ready' | 'shooting' | 'saved' | 'scored'
@@ -21,6 +22,37 @@ const BALL_START = { x: 200, y: 246 }
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v))
+}
+
+/** Rotating "did you know?" trivia about penalty kicks, fading between facts. */
+function FunFact() {
+  const { t, lang } = useApp()
+  const [index, setIndex] = useState(() => Math.floor(Math.random() * penaltyFacts.length))
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setIndex((i) => (i + 1) % penaltyFacts.length)
+    }, 6000)
+    return () => window.clearInterval(id)
+  }, [])
+
+  return (
+    <div className="mt-8 min-h-[4.5rem] border-t border-neutral-200 pt-4 dark:border-neutral-800">
+      <p className="text-accent font-mono text-[11px] tracking-widest uppercase">{t('penaltyFactLabel')}</p>
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={index}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.4 }}
+          className="mt-1.5 font-mono text-xs text-neutral-500"
+        >
+          {penaltyFacts[index][lang]}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  )
 }
 
 function Keeper({ phase, dive }: { phase: Phase; dive: Dive }) {
@@ -227,6 +259,8 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
         >
           {t('penaltySkip')}
         </button>
+
+        <FunFact />
       </div>
     </div>
   )

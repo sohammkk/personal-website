@@ -4,9 +4,6 @@ import { RotateCcw } from 'lucide-react'
 import { useApp } from '../AppContext'
 import { site } from '../content'
 
-// ------------------------------------------------------------------
-// Live stock chart — Twelve Data API (free key: https://twelvedata.com/)
-// ------------------------------------------------------------------
 
 const STOCKS = ['NVDA', 'AAPL', 'MSFT', 'SPY'] as const
 type Symbol = (typeof STOCKS)[number]
@@ -545,9 +542,16 @@ export function SideQuests({ onReplay }: { onReplay: () => void }) {
   const { t } = useApp()
   return (
     <section id="quests" className="mx-auto max-w-5xl px-6 py-20">
-      <p className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
+      <p className="text-accent mb-3 font-mono text-sm tracking-widest opacity-80">
+        ~/{site.name.split(' ')[0].toLowerCase()}/side-quests
+      </p>
+      <p className="font-mono text-lg text-neutral-600 dark:text-neutral-400">
         <span className="text-accent">{'// '}</span>
-        {t('marketCaption')}
+        {t('marketCaption1')}
+      </p>
+      <p className="font-mono text-s text-neutral-600 dark:text-neutral-400 mt-2">
+        <span className="text-accent">{'// '}</span>
+        {t('marketCaption2')}
       </p>
 
       <div className="mt-6 grid gap-4">

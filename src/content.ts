@@ -65,8 +65,8 @@ export const ui: Record<string, Localized> = {
   certsTitle: { en: 'Certifications', de: 'Zertifikate' },
   cvTitle: { en: 'Curriculum Vitae', de: 'Lebenslauf' },
   cvTagline: {
-    en: 'Everything I’ve built, studied and shipped — in one place.',
-    de: 'Alles, was ich gebaut, studiert und ausgeliefert habe — an einem Ort.',
+    en: 'Everything I’ve built, studied and shipped',
+    de: 'Alles, was ich gebaut, studiert und ausgeliefert habe',
   },
   cvDownload: { en: 'Download PDF', de: 'PDF herunterladen' },
   cvCtaTitle: { en: 'Want the full story?', de: 'Die ganze Geschichte?' },
@@ -75,13 +75,11 @@ export const ui: Record<string, Localized> = {
     de: 'Erfahrung, Projekte, Fähigkeiten und Bildung',
   },
   cvCtaBtn: { en: 'View my CV', de: 'Zum Lebenslauf' },
-  contactTitle: { en: "Let's connect", de: 'Kontakt aufnehmen' },
-  contactText: {
-    en: 'Open to opportunities and collaborations. Drop me a line.',
-    de: 'Offen für Möglichkeiten und Kooperationen. Schreib mir gerne.',
-  },
+  contactTitle: { en: "Get in touch!", de: 'Komm in Kontakt!' },
+
   nowPlaying: { en: 'Now playing', de: 'Läuft gerade' },
   lastPlayed: { en: 'Last played', de: 'Zuletzt gehört' },
+  ipodHoverHint: { en: 'hover me ♪', de: 'hover über mich ♪' },
   present: { en: 'Present', de: 'Heute' },
   viewCert: { en: 'View certificate', de: 'Zertifikat ansehen' },
   footerRights: { en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.' },
@@ -94,8 +92,11 @@ export const ui: Record<string, Localized> = {
   penaltyGoal: { en: 'GOAL!', de: 'TOR!' },
   penaltyUnlocking: { en: 'access granted — loading portfolio…', de: 'Zugriff gewährt — Portfolio wird geladen…' },
   penaltySkip: { en: 'skip the shootout →', de: 'Elfmeter überspringen →' },
+  penaltyFactLabel: { en: 'did you know?', de: 'wusstest du schon?' },
   // Stock market / side quest interlude
-  marketCaption: { en: 'side quests: off the keyboard', de: 'Nebenquests: abseits der Tastatur' },
+  marketCaption1: { en: 'side quests: things i like to do off the keyboard', de: 'Nebenquests: Lieblingsaktivitäten abseits der Tastatur' },
+  marketCaption2: { en: 'here i created three interactive components that reflect some hobbies i pursue: a stock ticker dashboard, a padel rally game and a penalty kick shootout simulation', de: 'Hier habe ich drei interaktive Komponenten erstellt, die einige Hobbys widerspiegeln, denen ich nachgehe: ein Aktien-Ticker-Dashboard, ein Padel-Rallye-Spiel und ein Elfmeter-Schießen Simulation' },
+
   questChartLoading: { en: 'fetching prices…', de: 'Kurse werden geladen…' },
   questChartNote: { en: 'live daily chart, using twelve data api', de: 'Live-Tageschart, Twelve-Data-API genutzt' },
   questChartOffline: { en: 'api unreachable, showing demo data', de: 'API nicht erreichbar, Demodaten angezeigt' },
@@ -106,11 +107,47 @@ export const ui: Record<string, Localized> = {
   questRallyTitle: { en: 'padel rally', de: 'Padel-Rallye' },
   questRallyHint: { en: 'move the racket and catch every bounce!', de: 'bewege den Schläger und triff jeden Ball!' },
   questRallyServe: { en: 'tap to serve', de: 'tippe zum Aufschlag' },
-  questRallyMiss: { en: 'missed!', de: 'daneben!' },
+  questRallyMiss: { en: 'oops!', de: 'oops!' },
   questRallyBest: { en: 'best', de: 'Rekord' },
   questReplayTitle: { en: 'fancy another shot?', de: 'Lust auf noch einen Schuss?' },
   questReplayBtn: { en: 'replay the shootout', de: 'Elfmeter wiederholen' },
 }
+
+// Trivia shown on the penalty-kick gate, rotating every few seconds.
+export const penaltyFacts: Localized[] = [
+  {
+    en: 'A penalty kick has an xG (expected goals) of roughly 0.78 — a ~78% statistical chance of scoring.',
+    de: 'Ein Elfmeter hat ein xG (erwartete Tore) von rund 0,78 — eine statistische Trefferwahrscheinlichkeit von ca. 78 %.',
+  },
+  {
+    en: 'Germany has historically been the most clinical nation in major-tournament shootouts, rarely missing when it matters.',
+    de: 'Deutschland war historisch die treffsicherste Nation bei Elfmeterschießen in großen Turnieren.',
+  },
+  {
+    en: 'The "Panenka" — a chipped penalty down the middle — is named after Antonín Panenka, who scored one to win Euro 1976.',
+    de: 'Der „Panenka" — ein gechippter Elfmeter in die Mitte — ist nach Antonín Panenka benannt, der damit 1976 die EM gewann.',
+  },
+  {
+    en: 'Goalkeepers dive to a side over 94% of the time, even though staying centered statistically saves more penalties.',
+    de: 'Torhüter springen in über 94 % der Fälle zur Seite, obwohl zentrales Stehenbleiben statistisch mehr Elfmeter hält.',
+  },
+  {
+    en: 'England lost their first six major-tournament penalty shootouts before finally winning one at the 2018 World Cup.',
+    de: 'England verlor seine ersten sechs Elfmeterschießen bei großen Turnieren, bevor es bei der WM 2018 endlich gewann.',
+  },
+  {
+    en: 'The fastest recorded penalty kicks exceed 130 km/h — faster than most goalkeepers can physically react.',
+    de: 'Die schnellsten gemessenen Elfmeter überschreiten 130 km/h — schneller, als die meisten Torhüter reagieren können.',
+  },
+  {
+    en: "Since the 1982 World Cup, roughly 3 out of every 4 penalties taken in shootouts have been scored.",
+    de: 'Seit der WM 1982 wurden ungefähr 3 von 4 Elfmetern im Elfmeterschießen verwandelt.',
+  },
+  {
+    en: 'The Netherlands have one of the worst World Cup shootout records of any major footballing nation, despite their talent.',
+    de: 'Die Niederlande haben trotz ihres Talents eine der schlechtesten WM-Elfmeterschießen-Bilanzen aller großen Fußballnationen.',
+  },
+]
 
 export interface ExperienceItem {
   role: Localized
@@ -256,8 +293,8 @@ export const projects: ProjectItem[] = [
   {
     title: { en: 'Zero Trust Security for EV Charging Stations', de: 'Zero-Trust-Sicherheit für E-Ladestationen' },
     description: {
-      en: 'A zero-trust security solution for EV charging stations using Random Forest classifiers — significantly reduced compute overhead with pure OpenFlow-based statistics while matching the discriminative power of NFStream.',
-      de: 'Eine Zero-Trust-Sicherheitslösung für E-Ladestationen mit Random-Forest-Klassifikatoren — deutlich reduzierter Rechenaufwand durch reine OpenFlow-Statistiken bei vergleichbarer Trennschärfe zu NFStream.',
+      en: 'A zero-trust security solution for EV charging stations using Random Forest classifiers: significantly reduced compute overhead with pure OpenFlow-based statistics while matching the discriminative power of NFStream.',
+      de: 'Eine Zero-Trust-Sicherheitslösung für E-Ladestationen mit Random-Forest-Klassifikatoren: deutlich reduzierter Rechenaufwand durch reine OpenFlow-Statistiken bei vergleichbarer Trennschärfe zu NFStream.',
     },
     period: { en: 'Jun 2026 – Sep 2026', de: 'Jun 2026 – Sep 2026' },
     tags: ['Python', 'ML', 'Security'],
@@ -268,8 +305,8 @@ export const projects: ProjectItem[] = [
   {
     title: { en: 'iseportal.com', de: 'iseportal.com' },
     description: {
-      en: 'A full-stack web platform serving ≈500 international engineering students at the University of Duisburg-Essen — centralizing academic and relocation resources, managed across the full software development lifecycle.',
-      de: 'Eine Full-Stack-Webplattform für ca. 500 internationale Ingenieurstudierende an der Universität Duisburg-Essen — zentralisiert Studien- und Umzugsressourcen, betreut über den gesamten Software-Lebenszyklus.',
+      en: 'A full-stack web platform serving ≈500 international engineering students at the University of Duisburg-Essen, centralizing academic and relocation resources, managed across the full software development lifecycle.',
+      de: 'Eine Full-Stack-Webplattform für ca. 500 internationale Ingenieurstudierende an der Universität Duisburg-Essen, zentralisiert Studien- und Umzugsressourcen, betreut über den gesamten Software-Lebenszyklus.',
     },
     period: { en: 'Jun 2025 – Apr 2026', de: 'Jun 2025 – Apr 2026' },
     tags: ['TypeScript', 'PostgreSQL', 'Next.js'],
