@@ -35,24 +35,26 @@ export function CvPage() {
           <p className="mt-4 max-w-xl text-lg text-neutral-600 dark:text-neutral-400">
             {t('cvTagline')}
           </p>
-          <div className="mt-8 flex-wrap items-center gap-3">
-            {(['en', 'de'] as const).map((l) => (
-              <a
-                key={l}
-                href={site.cv[l]}
-                target="_blank"
-                rel="noreferrer"
-                className={
-                  l === lang
-                    ? 'bg-accent hover:bg-accent-dim inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]'
-                    : 'inline-flex items-center gap-2 rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold transition-all hover:scale-[1.03] hover:border-neutral-500 active:scale-[0.98] dark:border-neutral-700 dark:hover:border-neutral-400'
-                }
-              >
-                <FileText size={16} /> {t('cvDownload')} ({l.toUpperCase()})
-              </a>
-            ))}
-            {/* socials */}
-            <div className="mt-8 flex gap-2">
+          <div className="mt-8 flex flex-col items-start gap-4">
+            <div className="flex flex-wrap items-center gap-4">
+              {(['en', 'de'] as const).map((l) => (
+                <a
+                  key={l}
+                  href={site.cv[l]}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={
+                    l === lang
+                      ? 'bg-accent hover:bg-accent-dim inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]'
+                      : 'inline-flex items-center gap-2 rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold transition-all hover:scale-[1.03] hover:border-neutral-500 active:scale-[0.98] dark:border-neutral-700 dark:hover:border-neutral-400'
+                  }
+                >
+                  <FileText size={16} /> {t('cvDownload')} ({l.toUpperCase()})
+                </a>
+              ))}
+            </div>
+
+            <div className="flex gap-3 mt-4">
               {[
                 { href: site.socials.github, icon: Github, label: 'GitHub' },
                 { href: site.socials.linkedin, icon: Linkedin, label: 'LinkedIn' },
@@ -64,8 +66,7 @@ export function CvPage() {
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noreferrer"
                   aria-label={label}
-                  className="hover:border-accent hover:text-accent rounded-full border border-neutral-300 p-3 transition-all hover:scale-110 dark:border-neutral-700"
-                >
+                  className="hover:border-accent hover:text-accent rounded-full border border-neutral-300 p-3 transition-all hover:scale-110 dark:border-neutral-700"                >
                   <Icon size={16} />
                 </a>
               ))}

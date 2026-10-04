@@ -17,7 +17,7 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/soham-kumthekar-b95aba260/',
   },
   cv: {
-    en: 'https://assets.zyrosite.com/YrDW0JpewRCOjxNQ/soham_englishcv-P9dY5UWFRPXmJsOU.pdf',
+    en: '/public/SohamKumthekar_CV_English.pdf',
     de: 'https://assets.zyrosite.com/YrDW0JpewRCOjxNQ/soham_germancv-dmk8H2X17QeswQby.pdf',
   },
   // Last.fm powers the iPod widget (Apple Music can scrobble to Last.fm).
@@ -47,7 +47,7 @@ export const ui: Record<string, Localized> = {
   heroRole1: { en: 'B.Sc. Computer Engineering @ University of Duisburg-Essen', de: 'B.Sc. Computer Engineering @ Universität Duisburg-Essen' },
   heroRole2: { en: 'Working Student in IT Architecture @ Uniper SE', de: 'Werkstudent IT-Architektur @ Uniper SE' },
   heroCta: { en: 'Get in touch', de: 'Kontakt aufnehmen' },
-  heroCv: { en: 'Download CV', de: 'Lebenslauf herunterladen' },
+  heroCv: { en: 'View PDF', de: 'PDF herunterladen' },
   aboutTitle: { en: 'About me', de: 'Über mich' },
   aboutText: {
     en: "I'm a computer engineering student at the University of Duisburg-Essen with a passion for cloud infrastructure, web development and scalable architecture. Currently working at Uniper SE in the IT architecture team.",
@@ -68,7 +68,7 @@ export const ui: Record<string, Localized> = {
     en: 'Everything I’ve built, studied and shipped',
     de: 'Alles, was ich gebaut, studiert und ausgeliefert habe',
   },
-  cvDownload: { en: 'Download PDF', de: 'PDF herunterladen' },
+  cvDownload: { en: 'View PDF', de: 'PDF ansehen' },
   cvCtaTitle: { en: 'Want the full story?', de: 'Die ganze Geschichte?' },
   cvCtaText: {
     en: 'Experience, projects, skills and education',
@@ -94,7 +94,8 @@ export const ui: Record<string, Localized> = {
   penaltySkip: { en: 'skip the shootout →', de: 'Elfmeter überspringen →' },
   penaltyFactLabel: { en: 'did you know?', de: 'wusstest du schon?' },
   // Stock market / side quest interlude
-  marketCaption1: { en: 'side quests: things i like to do off the keyboard', de: 'Nebenquests: Lieblingsaktivitäten abseits der Tastatur' },
+  marketCaptionBolded: { en: 'side quests:', de: 'Nebenquests:' },
+  marketCaption1: { en: 'things i like to do off the keyboard', de: 'Lieblingsaktivitäten abseits der Tastatur' },
   marketCaption2: { en: 'here i created three interactive components that reflect some hobbies i pursue: a stock ticker dashboard, a padel rally game and a penalty kick shootout simulation', de: 'Hier habe ich drei interaktive Komponenten erstellt, die einige Hobbys widerspiegeln, denen ich nachgehe: ein Aktien-Ticker-Dashboard, ein Padel-Rallye-Spiel und ein Elfmeter-Schießen Simulation' },
 
   questChartLoading: { en: 'fetching prices…', de: 'Kurse werden geladen…' },
@@ -167,7 +168,7 @@ export const experience: ExperienceItem[] = [
         'Orchestrated an enterprise-wide file share migration of ≈5 TB by provisioning Azure infrastructure via Terraform and automating deployments through CI/CD DevOps pipelines',
         'Developed an AI agent using Microsoft Copilot Studio to dynamically generate Mermaid architecture diagrams and populate documentation from enterprise data, reducing manual effort by 50%',
         'Engineered a Docker-containerized telephone name resolution pipeline using Python and OpenLDAP, configuring custom network routing to synchronize directory data with Fanvil telecom hardware',
-        'Built a voice recording archival app storing over 300,000 recordings — Azure Function Apps for API data retrieval, optimized database schemas and enhanced UI/UX with Vue.js and Nuxt UI',
+        'Built a voice recording archival app storing over 300,000 recordings, by using Azure Function Apps for API data retrieval, optimizing database schemas and enhancing UI/UX with Vue.js and Nuxt UI',
         'Implemented enterprise datasets in Collibra to establish data lineage, metadata management and cataloging for core business assets',
         'Drafted Architecture Outline Documents for multiple core business applications',
         'Developed a Power BI dashboard for IT application assessment logs with visualizations and advanced filtering',
@@ -177,7 +178,7 @@ export const experience: ExperienceItem[] = [
         'Orchestrierung einer unternehmensweiten Fileshare-Migration von ca. 5 TB durch Bereitstellung von Azure-Infrastruktur mit Terraform und automatisierte Deployments über CI/CD-DevOps-Pipelines',
         'Entwicklung eines KI-Agenten mit Microsoft Copilot Studio zur dynamischen Generierung von Mermaid-Architekturdiagrammen und Dokumentation aus Unternehmensdaten — 50 % weniger manueller Aufwand',
         'Entwicklung einer Docker-containerisierten Telefon-Namensauflösungs-Pipeline mit Python und OpenLDAP, inklusive Netzwerk-Routing zur Synchronisation von Verzeichnisdaten mit Fanvil-Telefonhardware',
-        'Entwicklung einer Archivierungs-App für über 300.000 Sprachaufzeichnungen — Azure Function Apps für API-Datenabruf, optimierte Datenbankschemata und verbesserte UI/UX mit Vue.js und Nuxt UI',
+        'Entwicklung einer Archivierungs-App für über 300.000 Sprachaufzeichnungen, unter Verwendung von Azure Function Apps für API-Datenabruf, optimierte Datenbankschemata und verbesserte UI/UX mit Vue.js und Nuxt UI',
         'Implementierung von Unternehmensdatensätzen in Collibra für Data Lineage, Metadatenmanagement und Katalogisierung zentraler Business-Assets',
         'Erstellung von Architecture Outline Documents für mehrere Kerngeschäftsanwendungen',
         'Entwicklung eines Power-BI-Dashboards für IT-Anwendungsbewertungen mit Visualisierungen und erweiterten Filtern',
@@ -283,6 +284,8 @@ export interface ProjectItem {
   // Path to an image in /public (e.g. '/projects/raytracer.png') or a full URL.
   // Leave empty to show a placeholder.
   image: string
+  // Direct website URL. When present, clicking the project title opens it.
+  website?: string
   // GitHub repo URL. Leave empty + set repoStatus to show "private repo" or
   // "coming soon" instead of a link.
   repo: string
@@ -310,7 +313,8 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Jun 2025 – Apr 2026', de: 'Jun 2025 – Apr 2026' },
     tags: ['TypeScript', 'PostgreSQL', 'Next.js'],
-    image: '',
+    image: '/public/iseportal.png',
+    website: 'https://iseportal.com',
     repo: '',
     repoStatus: 'private',
   },
@@ -322,8 +326,8 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Oct 2023 – Jan 2024', de: 'Okt 2023 – Jan 2024' },
     tags: ['C++', 'OOP', 'Graphics'],
-    image: '',
-    repo: '',
+    image: '/public/raytracer.png',
+    repo: 'https://github.com/sohammkk/raytracer_oop',
     repoStatus: 'soon',
   },
   {
@@ -334,8 +338,8 @@ export const projects: ProjectItem[] = [
     },
     period: { en: 'Apr 2024 – Jun 2024', de: 'Apr 2024 – Jun 2024' },
     tags: ['MATLAB', 'CNN', 'MNIST'],
-    image: '',
-    repo: '',
+    image: '/public/neuralnetwork.png',
+    repo: 'https://github.com/sohammkk/CBEM_3NeuralNetworks/tree/main',
     repoStatus: 'soon',
   },
 ]

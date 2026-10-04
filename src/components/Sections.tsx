@@ -144,9 +144,21 @@ export function Projects() {
 
             <div className="flex flex-1 flex-col p-6">
               <p className="font-mono text-xs text-neutral-500">{p.period[lang]}</p>
-              <h3 className="font-display group-hover:text-accent mt-1 text-lg font-semibold transition-colors">
-                {p.title[lang]}
-              </h3>
+              {p.website ? (
+                <a
+                  href={p.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-display group-hover:text-accent mt-1 inline-flex items-center gap-1.5 text-lg font-semibold transition-colors"
+                >
+                  <span>{p.title[lang]}</span>
+                  <ExternalLink size={14} className="opacity-70" />
+                </a>
+              ) : (
+                <h3 className="font-display group-hover:text-accent mt-1 text-lg font-semibold transition-colors">
+                  {p.title[lang]}
+                </h3>
+              )}
               <p className="mt-2 flex-1 text-sm text-neutral-600 dark:text-neutral-400">
                 {p.description[lang]}
               </p>

@@ -547,7 +547,7 @@ export function SideQuests({ onReplay }: { onReplay: () => void }) {
       </p>
       <p className="font-mono text-lg text-neutral-600 dark:text-neutral-400">
         <span className="text-accent">{'// '}</span>
-        {t('marketCaption1')}
+        <strong>{t('marketCaptionBolded')}</strong> {t('marketCaption1')}
       </p>
       <p className="font-mono text-s text-neutral-600 dark:text-neutral-400 mt-2">
         <span className="text-accent">{'// '}</span>
