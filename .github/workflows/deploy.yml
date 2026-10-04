@@ -20,6 +20,10 @@ jobs:
 
       - name: Build Project
         run: npm run build
+        env:
+          VITE_TWELVEDATA_API_KEY: ${{ secrets.VITE_TWELVEDATA_API_KEY }}
+          VITE_LASTFM_USERNAME: ${{ secrets.VITE_LASTFM_USERNAME }}
+          VITE_LASTFM_API_KEY: ${{ secrets.VITE_LASTFM_API_KEY }}
 
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
