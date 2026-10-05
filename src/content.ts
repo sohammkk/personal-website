@@ -117,16 +117,16 @@ export const ui: Record<string, Localized> = {
 // Trivia shown on the penalty-kick gate, rotating every few seconds.
 export const penaltyFacts: Localized[] = [
   {
-    en: 'A penalty kick has an xG (expected goals) of roughly 0.78 — a ~78% statistical chance of scoring.',
-    de: 'Ein Elfmeter hat ein xG (erwartete Tore) von rund 0,78 — eine statistische Trefferwahrscheinlichkeit von ca. 78 %.',
+    en: 'A penalty kick has an xG (expected goals) of roughly 0.78, which is a ~78% statistical chance of scoring.',
+    de: 'Ein Elfmeter hat ein xG (erwartete Tore) von rund 0,78; eine statistische Trefferwahrscheinlichkeit von ca. 78%.',
   },
   {
     en: 'Germany has historically been the most clinical nation in major-tournament shootouts, rarely missing when it matters.',
     de: 'Deutschland war historisch die treffsicherste Nation bei Elfmeterschießen in großen Turnieren.',
   },
   {
-    en: 'The "Panenka" — a chipped penalty down the middle — is named after Antonín Panenka, who scored one to win Euro 1976.',
-    de: 'Der „Panenka" — ein gechippter Elfmeter in die Mitte — ist nach Antonín Panenka benannt, der damit 1976 die EM gewann.',
+    en: 'The "Panenka" (a chipped penalty down the middle) is named after Antonín Panenka, who scored one to win Euro 1976.',
+    de: 'Der „Panenka" (ein gechippter Elfmeter in die Mitte) ist nach Antonín Panenka benannt, der damit 1976 die EM gewann.',
   },
   {
     en: 'Goalkeepers dive to a side over 94% of the time, even though staying centered statistically saves more penalties.',
@@ -137,8 +137,8 @@ export const penaltyFacts: Localized[] = [
     de: 'England verlor seine ersten sechs Elfmeterschießen bei großen Turnieren, bevor es bei der WM 2018 endlich gewann.',
   },
   {
-    en: 'The fastest recorded penalty kicks exceed 130 km/h — faster than most goalkeepers can physically react.',
-    de: 'Die schnellsten gemessenen Elfmeter überschreiten 130 km/h — schneller, als die meisten Torhüter reagieren können.',
+    en: 'The fastest recorded penalty kicks exceed 130 km/h, faster than most goalkeepers can physically react.',
+    de: 'Die schnellsten gemessenen Elfmeter überschreiten 130 km/h, schneller, als die meisten Torhüter reagieren können.',
   },
   {
     en: "Since the 1982 World Cup, roughly 3 out of every 4 penalties taken in shootouts have been scored.",
@@ -161,7 +161,7 @@ export const experience: ExperienceItem[] = [
   {
     role: { en: 'Working Student in IT Architecture', de: 'Werkstudent IT-Architektur' },
     company: 'Uniper IT · Düsseldorf',
-    period: { en: 'Jun 2025 – Present', de: 'Jun 2025 – Heute' },
+    period: { en: 'Jun 2025 - Present', de: 'Jun 2025 - Heute' },
     bullets: {
       en: [
         'Architected a Python workflow in GitHub Actions to extract Confluent Kafka API resources across 200+ applications, generating Mermaid.js Markdown files and automating architectural documentation on the GitHub Wiki',
@@ -188,7 +188,7 @@ export const experience: ExperienceItem[] = [
   {
     role: { en: 'Student Assistant', de: 'Studentische Hilfskraft' },
     company: 'Faculty of Engineering, University of Duisburg-Essen',
-    period: { en: 'Jun 2024 – May 2025', de: 'Jun 2024 – Mai 2025' },
+    period: { en: 'Jun 2024 - May 2025', de: 'Jun 2024 - Mai 2025' },
     bullets: {
       en: [
         'Developed and maintained a web interface for the university research database',
@@ -205,7 +205,7 @@ export const experience: ExperienceItem[] = [
   {
     role: { en: 'Intern', de: 'Praktikant' },
     company: 'Fachhochschule Aachen · Jülich',
-    period: { en: 'Oct 2022 – Nov 2022', de: 'Okt 2022 – Nov 2022' },
+    period: { en: 'Oct 2022 - Nov 2022', de: 'Okt 2022 - Nov 2022' },
     bullets: {
       en: ['Created a full-stack restaurant ordering project using PHP, HTML, CSS, MySQL and Python'],
       de: ['Erstellung eines Full-Stack-Projekts zur Restaurantbestellung mit PHP, HTML, CSS, MySQL und Python'],
@@ -217,7 +217,7 @@ export const volunteering: ExperienceItem[] = [
   {
     role: { en: 'Vice President & Technical Member', de: 'Vizepräsident & Mitglied des Technikteams' },
     company: 'Student Council ISE, University of Duisburg-Essen',
-    period: { en: 'Nov 2024 – Present', de: 'Nov 2024 – Heute' },
+    period: { en: 'Nov 2024 - Present', de: 'Nov 2024 - Heute' },
     bullets: {
       en: [
         'Helped lead the student council by organizing regular meetings with professors and collaborations with other councils',
@@ -234,7 +234,7 @@ export const volunteering: ExperienceItem[] = [
   {
     role: { en: 'International Referent', de: 'Internationaler Referent' },
     company: 'AStA Duisburg-Essen',
-    period: { en: 'Nov 2024 – May 2026', de: 'Nov 2024 – Mai 2026' },
+    period: { en: 'Nov 2024 - May 2026', de: 'Nov 2024 - Mai 2026' },
     bullets: {
       en: [
         'Planned and organized cultural, social, and informational events to support international students in integrating into German society and university life',
@@ -259,19 +259,19 @@ export const education: EducationItem[] = [
   {
     school: { en: 'University of Duisburg-Essen', de: 'Universität Duisburg-Essen' },
     degree: { en: 'B.Sc. Computer Engineering', de: 'B.Sc. Computer Engineering' },
-    period: { en: 'Oct 2023 – Oct 2026', de: 'Okt 2023 – Okt 2026' },
+    period: { en: 'Oct 2023 - Oct 2026', de: 'Okt 2023 - Okt 2026' },
     grade: { en: 'Grade (German system): 1.4', de: 'Note (deutsches Notensystem): 1,4' },
   },
   {
     school: { en: 'Freshman Institute, FH Aachen', de: 'Freshman Institute, FH Aachen' },
     degree: { en: 'Studienkolleg', de: 'Studienkolleg' },
-    period: { en: 'Oct 2022 – Jun 2023', de: 'Okt 2022 – Jun 2023' },
+    period: { en: 'Oct 2022 - Jun 2023', de: 'Okt 2022 - Jun 2023' },
     grade: { en: 'Grade (German system): 1.4', de: 'Note (deutsches Notensystem): 1,4' },
   },
   {
     school: { en: 'The Emirates National School, Sharjah', de: 'The Emirates National School, Sharjah' },
     degree: { en: 'CBSE Grade 12', de: 'CBSE Klasse 12' },
-    period: { en: 'Apr 2021 – Jun 2022', de: 'Apr 2021 – Jun 2022' },
+    period: { en: 'Apr 2021 - Jun 2022', de: 'Apr 2021 - Jun 2022' },
     grade: { en: 'Grade: 96.6%', de: 'Note: 96,6 %' },
   },
 ]
@@ -299,7 +299,7 @@ export const projects: ProjectItem[] = [
       en: 'A zero-trust security solution for EV charging stations using Random Forest classifiers: significantly reduced compute overhead with pure OpenFlow-based statistics while matching the discriminative power of NFStream.',
       de: 'Eine Zero-Trust-Sicherheitslösung für E-Ladestationen mit Random-Forest-Klassifikatoren: deutlich reduzierter Rechenaufwand durch reine OpenFlow-Statistiken bei vergleichbarer Trennschärfe zu NFStream.',
     },
-    period: { en: 'Jun 2026 – Sep 2026', de: 'Jun 2026 – Sep 2026' },
+    period: { en: 'Jun 2026 - Sep 2026', de: 'Jun 2026 - Sep 2026' },
     tags: ['Python', 'ML', 'Security'],
     image: '',
     repo: '',
@@ -311,7 +311,7 @@ export const projects: ProjectItem[] = [
       en: 'A full-stack web platform serving ≈500 international engineering students at the University of Duisburg-Essen, centralizing academic and relocation resources, managed across the full software development lifecycle.',
       de: 'Eine Full-Stack-Webplattform für ca. 500 internationale Ingenieurstudierende an der Universität Duisburg-Essen, zentralisiert Studien- und Umzugsressourcen, betreut über den gesamten Software-Lebenszyklus.',
     },
-    period: { en: 'Jun 2025 – Apr 2026', de: 'Jun 2025 – Apr 2026' },
+    period: { en: 'Jun 2025 - Apr 2026', de: 'Jun 2025 - Apr 2026' },
     tags: ['TypeScript', 'PostgreSQL', 'Next.js'],
     image: '/iseportal.png',
     website: 'https://iseportal.com',
@@ -324,7 +324,7 @@ export const projects: ProjectItem[] = [
       en: 'A raytracer built from scratch in C++ using object-oriented programming principles.',
       de: 'Ein von Grund auf in C++ entwickelter Raytracer nach objektorientierten Prinzipien.',
     },
-    period: { en: 'Oct 2023 – Jan 2024', de: 'Okt 2023 – Jan 2024' },
+    period: { en: 'Oct 2023 - Jan 2024', de: 'Okt 2023 - Jan 2024' },
     tags: ['C++', 'OOP', 'Graphics'],
     image: '/raytracer.png',
     repo: 'https://github.com/sohammkk/raytracer_oop',
@@ -336,7 +336,7 @@ export const projects: ProjectItem[] = [
       en: 'A convolutional neural network built in MATLAB, trained on the MNIST database and optimized to 95.3% accuracy.',
       de: 'Ein in MATLAB entwickeltes Convolutional Neural Network, trainiert mit der MNIST-Datenbank und auf 95,3 % Genauigkeit optimiert.',
     },
-    period: { en: 'Apr 2024 – Jun 2024', de: 'Apr 2024 – Jun 2024' },
+    period: { en: 'Apr 2024 - Jun 2024', de: 'Apr 2024 - Jun 2024' },
     tags: ['MATLAB', 'CNN', 'MNIST'],
     image: '/neuralnetwork.png',
     repo: 'https://github.com/sohammkk/CBEM_3NeuralNetworks/tree/main',
@@ -346,7 +346,7 @@ export const projects: ProjectItem[] = [
 
 export interface SkillItem {
   name: string
-  percent: number // 0–100, fills the bar — tweak freely
+  percent: number // 0-100, fills the bar — tweak freely
 }
 
 export interface SkillCategory {

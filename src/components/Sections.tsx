@@ -247,7 +247,7 @@ export function Skills() {
       <p className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-neutral-600 dark:text-neutral-400">
         {languages.map((l) => (
           <span key={l.name.en}>
-            <span className="text-accent font-mono">#</span> {l.name[lang]} —{' '}
+            <span className="text-accent font-mono">#</span> {l.name[lang]} -{' '}
             <span className="font-mono">{l.level}</span>
           </span>
         ))}

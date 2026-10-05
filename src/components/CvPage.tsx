@@ -4,7 +4,6 @@ import { useApp } from '../AppContext'
 import { site } from '../content'
 import {
   Certifications,
-  Contact,
   Education,
   Experience,
   Projects,
@@ -81,7 +80,6 @@ export function CvPage() {
       <Education />
       <Volunteering />
       <Certifications />
-      <Contact />
     </main>
   )
 }
