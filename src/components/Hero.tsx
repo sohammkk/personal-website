@@ -26,7 +26,7 @@ export function Hero() {
         variants={container}
         initial={reduce ? false : 'hidden'}
         animate="show"
-        className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 pt-16 lg:grid-cols-[1.3fr_1fr]"
+        className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 pt-36 pb-24 lg:grid-cols-[1.3fr_1fr] lg:pt-16 lg:pb-0"
       >
         <div>
           <motion.p variants={item} className="text-accent mb-3 font-mono text-sm tracking-widest opacity-80">
