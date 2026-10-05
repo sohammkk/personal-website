@@ -99,7 +99,7 @@ export const ui: Record<string, Localized> = {
   marketCaption2: { en: 'here i created three interactive components that reflect some hobbies i pursue: a stock ticker dashboard, a padel rally game and a penalty kick shootout simulation', de: 'Hier habe ich drei interaktive Komponenten erstellt, die einige Hobbys widerspiegeln, denen ich nachgehe: ein Aktien-Ticker-Dashboard, ein Padel-Rallye-Spiel und ein Elfmeter-Schießen Simulation' },
 
   questChartLoading: { en: 'fetching prices…', de: 'Kurse werden geladen…' },
-  questChartNote: { en: 'live daily chart, using twelve data api', de: 'Live-Tageschart, Twelve-Data-API genutzt' },
+  questChartNote: { en: 'live market data via twelve data api · times in ET', de: 'Live-Marktdaten über die Twelve-Data-API · Zeiten in ET' },
   questChartOffline: { en: 'api unreachable, showing demo data', de: 'API nicht erreichbar, Demodaten angezeigt' },
   questChartNoKey: {
     en: 'demo data',

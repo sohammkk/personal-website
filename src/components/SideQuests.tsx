@@ -11,14 +11,24 @@ type Symbol = (typeof STOCKS)[number]
 // Chart range presets. `apiInterval` is the Twelve Data bar granularity;
 // `outputsize` controls how far back the request reaches. Credit cost is
 // 1 per symbol per request regardless of interval, so these are all cheap.
+// Intraday ranges fetch a few extra bars and are then trimmed to the last
+// `days` trading sessions (weekends/holidays have no bars).
 const RANGES = [
-  { key: '1D', label: '1D', apiInterval: '1day', outputsize: 60 },
-  { key: '1W', label: '1W', apiInterval: '1week', outputsize: 52 },
-  { key: '1M', label: '1M', apiInterval: '1month', outputsize: 36 },
-  { key: '1Y', label: '1Y', apiInterval: '1day', outputsize: 252 },
-  { key: 'ALL', label: 'All', apiInterval: '1month', outputsize: 240 },
+  { key: '1D', label: '1D', apiInterval: '5min', outputsize: 120, days: 1 },
+  { key: '1W', label: '1W', apiInterval: '30min', outputsize: 80, days: 5 },
+  { key: '1M', label: '1M', apiInterval: '1day', outputsize: 22, days: 0 },
+  { key: '1Y', label: '1Y', apiInterval: '1day', outputsize: 252, days: 0 },
+  { key: 'ALL', label: 'All', apiInterval: '1month', outputsize: 240, days: 0 },
 ] as const
 type RangeKey = (typeof RANGES)[number]['key']
+
+const isIntraday = (range: RangeKey) => range === '1D' || range === '1W'
+
+/** Twelve Data returns exchange-local wall-clock strings ("2026-10-05 15:55:00" or "2026-10-05").
+ *  Parse them as local wall-clock time so displayed times match the exchange (ET). */
+function parseDatetime(s: string) {
+  return new Date(s.length === 10 ? `${s}T00:00:00` : s.replace(' ', 'T'))
+}
 
 interface PricePoint {
   date: Date
@@ -42,9 +52,20 @@ function fmtPrice(v: number) {
   return `$${v.toLocaleString('en-US', { maximumFractionDigits: v < 10 ? 2 : v < 1000 ? 2 : 0 })}`
 }
 
+const fmtTime = (d: Date) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+
+/** Axis tick label */
 function fmtDate(d: Date, range: RangeKey) {
-  if (range === '1M' || range === 'ALL') return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' })
+  if (range === '1D') return fmtTime(d)
+  if (range === '1Y' || range === 'ALL') return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' })
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+/** Tooltip label */
+function fmtTooltip(d: Date, range: RangeKey) {
+  const day = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  if (range === 'ALL') return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+  return isIntraday(range) ? `${day}, ${fmtTime(d)} ET` : day
 }
 
 function MarketChart() {
@@ -88,9 +109,16 @@ function MarketChart() {
       .then((d: { status?: string; values?: { datetime: string; close: string }[] }) => {
         if (cancelled) return
         if (d.status === 'error' || !d.values) throw new Error('API error')
-        const pts = d.values
-          .map((v) => ({ date: new Date(v.datetime), value: parseFloat(v.close) }))
+        let values = d.values
+        if (meta.days > 0) {
+          // values are newest-first; keep only the last `days` trading sessions
+          const sessions = [...new Set(values.map((v) => v.datetime.slice(0, 10)))].slice(0, meta.days)
+          values = values.filter((v) => sessions.includes(v.datetime.slice(0, 10)))
+        }
+        const pts = values
+          .map((v) => ({ date: parseDatetime(v.datetime), value: parseFloat(v.close) }))
           .reverse()
+        if (pts.length < 2) throw new Error('not enough data')
         setCache((c) => ({ ...c, [cacheKey]: pts }))
       })
       .catch(() => {
@@ -99,7 +127,7 @@ function MarketChart() {
     return () => {
       cancelled = true
     }
-  }, [active, range, cacheKey, cache, hasKey, meta.apiInterval, meta.outputsize])
+  }, [active, range, cacheKey, cache, hasKey, meta.apiInterval, meta.outputsize, meta.days])
 
   const data = cache[cacheKey] ?? FALLBACK_PRICES
   const loading = hasKey && !cache[cacheKey] && !failed
@@ -145,7 +173,14 @@ function MarketChart() {
   const hoverPt = hover !== null ? points[hover] : null
   const hoverData = hover !== null ? data[hover] : null
   // keep the tooltip inside the plot
-  const tipX = hoverPt ? Math.min(Math.max(hoverPt.x, M.left + 70), W - M.right - 70) : 0
+  const tipX = hoverPt ? Math.min(Math.max(hoverPt.x, M.left + 86), W - M.right - 86) : 0
+
+  // Colour: whole chart follows the overall direction; while hovering, the part up to the
+  // cursor follows hovered value vs. the first value, and the rest is greyed out.
+  const ACCENT = 'var(--color-accent)'
+  const RED = '#f87171' // tailwind red-400, matches the ▼ readout
+  const baseColor = up ? ACCENT : RED
+  const lineColor = hoverData ? (hoverData.value >= data[0].value ? ACCENT : RED) : baseColor
 
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
@@ -209,9 +244,19 @@ function MarketChart() {
         >
           <defs>
             <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+              <stop offset="0%" stopColor={lineColor} stopOpacity="0.25" />
+              <stop offset="100%" stopColor={lineColor} stopOpacity="0" />
             </linearGradient>
+            {hoverPt && (
+              <>
+                <clipPath id="chart-before-hover">
+                  <rect x="0" y="0" width={hoverPt.x} height={H} />
+                </clipPath>
+                <clipPath id="chart-after-hover">
+                  <rect x={hoverPt.x} y="0" width={W - hoverPt.x} height={H} />
+                </clipPath>
+              </>
+            )}
           </defs>
 
           {/* y-axis grid + labels */}
@@ -264,6 +309,7 @@ function MarketChart() {
             d={areaPath}
             fill="url(#chart-fill)"
             stroke="none"
+            clipPath={hoverPt ? 'url(#chart-before-hover)' : undefined}
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -272,14 +318,28 @@ function MarketChart() {
             key={`line-${cacheKey}-${String(!!cache[cacheKey])}`}
             d={path}
             fill="none"
-            stroke="var(--color-accent)"
+            stroke={lineColor}
             strokeWidth="2.5"
             strokeLinejoin="round"
             strokeLinecap="round"
+            clipPath={hoverPt ? 'url(#chart-before-hover)' : undefined}
             initial={reduce ? false : { pathLength: 0 }}
             animate={{ pathLength: 1 }}
             transition={{ duration: 1.2, ease: 'easeInOut' }}
           />
+          {/* remainder after the hovered point, greyed out */}
+          {hoverPt && (
+            <path
+              d={path}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              opacity="0.2"
+              clipPath="url(#chart-after-hover)"
+            />
+          )}
 
           {/* latest price dot */}
           {!reduce && !hoverPt && (
@@ -287,13 +347,13 @@ function MarketChart() {
               cx={last.x}
               cy={last.y}
               r="7"
-              fill="var(--color-accent)"
+              fill={baseColor}
               animate={{ scale: [1, 2, 1], opacity: [0.35, 0, 0.35] }}
               transition={{ duration: 1.8, repeat: Infinity, delay: 1.2 }}
               style={{ transformOrigin: `${last.x}px ${last.y}px` }}
             />
           )}
-          {!hoverPt && <circle cx={last.x} cy={last.y} r="4" fill="var(--color-accent)" />}
+          {!hoverPt && <circle cx={last.x} cy={last.y} r="4" fill={baseColor} />}
 
           {/* hover crosshair + tooltip */}
           {hoverPt && hoverData && (
@@ -303,18 +363,18 @@ function MarketChart() {
                 y1={M.top}
                 x2={hoverPt.x}
                 y2={M.top + PLOT_H}
-                stroke="var(--color-accent)"
+                stroke={lineColor}
                 strokeWidth="1"
                 strokeDasharray="3 3"
                 opacity="0.5"
               />
-              <circle cx={hoverPt.x} cy={hoverPt.y} r="5" fill="var(--color-accent)" />
-              <circle cx={hoverPt.x} cy={hoverPt.y} r="9" fill="var(--color-accent)" opacity="0.2" />
+              <circle cx={hoverPt.x} cy={hoverPt.y} r="5" fill={lineColor} />
+              <circle cx={hoverPt.x} cy={hoverPt.y} r="9" fill={lineColor} opacity="0.2" />
               <g>
                 <rect
-                  x={tipX - 68}
+                  x={tipX - 84}
                   y={M.top - 4}
-                  width="136"
+                  width="168"
                   height="36"
                   rx="8"
                   className="fill-neutral-900 dark:fill-neutral-100"
@@ -338,7 +398,7 @@ function MarketChart() {
                   fontFamily="var(--font-mono)"
                   className="fill-neutral-400 dark:fill-neutral-500"
                 >
-                  {hoverData.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  {fmtTooltip(hoverData.date, range)}
                 </text>
               </g>
             </g>
