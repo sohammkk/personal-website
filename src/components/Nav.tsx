@@ -15,7 +15,7 @@ const items: NavItem[] = [
   { key: 'navHome', route: 'home', href: '#/' },
   { key: 'navQuests', route: 'home', id: 'quests', href: '#quests' },
   { key: 'navCv', route: 'cv', href: '#/cv' },
-  { key: 'navContact', route: 'cv', id: 'contact', href: '#contact' },
+  { key: 'navContact', route: 'home', id: 'contact', href: '#contact' },
 ]
 
 export function Nav({ route }: { route: 'home' | 'cv' }) {

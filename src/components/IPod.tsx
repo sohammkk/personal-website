@@ -172,6 +172,7 @@ export function IPod() {
         transition={{ duration: 0.6 }}
         whileHover={reduce ? undefined : { rotate: 1.5, scale: 1.02 }}
         onHoverStart={popNotes}
+        onTap={popNotes}
         className="relative mx-auto w-64 cursor-pointer rounded-[2rem] border border-neutral-300 bg-gradient-to-b from-white to-neutral-200 p-5 shadow-xl select-none dark:border-neutral-700 dark:from-neutral-800 dark:to-neutral-900"
       >
         <NoteBurst bursts={bursts} />

@@ -79,7 +79,7 @@ export const ui: Record<string, Localized> = {
 
   nowPlaying: { en: 'Now playing', de: 'Läuft gerade' },
   lastPlayed: { en: 'Last played', de: 'Zuletzt gehört' },
-  ipodHoverHint: { en: 'hover me ♪', de: 'hover über mich ♪' },
+  ipodHoverHint: { en: 'hover or click me ♪', de: 'hover oder klick mich ♪' },
   present: { en: 'Present', de: 'Heute' },
   viewCert: { en: 'View certificate', de: 'Zertifikat ansehen' },
   footerRights: { en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.' },
@@ -281,7 +281,7 @@ export interface ProjectItem {
   description: Localized
   period: Localized
   tags: string[]
-  // Path to an image in /public (e.g. '/projects/raytracer.png') or a full URL.
+  // Path to an image in /public or a full URL.
   // Leave empty to show a placeholder.
   image: string
   // Direct website URL. When present, clicking the project title opens it.
@@ -363,8 +363,8 @@ export const skills: SkillCategory[] = [
       { name: 'SQL', percent: 80 },
       { name: 'C++', percent: 75 },
       { name: 'PHP', percent: 70 },
-      { name: 'HCL', percent: 70 },
-      { name: 'MATLAB', percent: 65 },
+      { name: 'HCL', percent: 75 },
+      { name: 'MATLAB', percent: 60 },
     ],
   },
   {
@@ -372,10 +372,11 @@ export const skills: SkillCategory[] = [
     items: [
       { name: 'Vue.js', percent: 85 },
       { name: 'Tailwind CSS', percent: 85 },
+      { name: 'React', percent: 85 },
       { name: 'Next.js', percent: 80 },
       { name: 'pandas', percent: 80 },
       { name: 'NumPy', percent: 75 },
-      { name: 'pytest / unittest', percent: 75 },
+      { name: 'pytest / unittest', percent: 80 },
       { name: 'scikit-learn', percent: 70 },
     ],
   },
@@ -383,23 +384,23 @@ export const skills: SkillCategory[] = [
     category: { en: 'DevOps & Infrastructure', de: 'DevOps & Infrastruktur' },
     items: [
       { name: 'Git', percent: 90 },
-      { name: 'Docker', percent: 85 },
+      { name: 'Docker', percent: 80 },
       { name: 'GitHub Actions', percent: 85 },
-      { name: 'Microsoft Azure', percent: 80 },
+      { name: 'Microsoft Azure', percent: 90 },
       { name: 'PostgreSQL', percent: 80 },
-      { name: 'Terraform', percent: 75 },
-      { name: 'Apache Kafka / Confluent Cloud', percent: 70 },
+      { name: 'Terraform', percent: 85 },
+      { name: 'Apache Kafka / Confluent Cloud', percent: 60 },
     ],
   },
   {
     category: { en: 'Cloud & Enterprise Tools', de: 'Cloud- & Enterprise-Tools' },
     items: [
-      { name: 'Microsoft Excel', percent: 85 },
-      { name: 'Power BI', percent: 75 },
-      { name: 'Copilot Studio', percent: 75 },
+      { name: 'Microsoft Excel', percent: 90 },
+      { name: 'Power BI', percent: 90 },
+      { name: 'Copilot Studio', percent: 80 },
       { name: 'Power Automate', percent: 70 },
       { name: 'Collibra', percent: 70 },
-      { name: 'ServiceNow', percent: 65 },
+      { name: 'ServiceNow', percent: 80 },
     ],
   },
 ]

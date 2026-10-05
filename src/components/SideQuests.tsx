@@ -34,12 +34,9 @@ const FALLBACK_PRICES: PricePoint[] = Array.from({ length: 30 }, (_, i) => {
   return { date: d, value: Math.round((trend + wave) * 100) / 100 }
 })
 
-// Chart geometry (viewBox units)
-const W = 800
-const H = 300
+// Chart margins (viewBox units). The viewBox width tracks the rendered pixel width,
+// so 1 unit = 1px and labels stay readable on small screens.
 const M = { top: 16, right: 16, bottom: 34, left: 58 }
-const PLOT_W = W - M.left - M.right
-const PLOT_H = H - M.top - M.bottom
 
 function fmtPrice(v: number) {
   return `$${v.toLocaleString('en-US', { maximumFractionDigits: v < 10 ? 2 : v < 1000 ? 2 : 0 })}`
@@ -58,6 +55,21 @@ function MarketChart() {
   const [cache, setCache] = useState<Partial<Record<string, PricePoint[]>>>({})
   const [failed, setFailed] = useState(false)
   const [hover, setHover] = useState<number | null>(null)
+  const plotRef = useRef<HTMLDivElement>(null)
+  const [W, setW] = useState(800)
+  const H = W < 500 ? 240 : Math.round(W * 0.375)
+  const PLOT_W = W - M.left - M.right
+  const PLOT_H = H - M.top - M.bottom
+
+  useEffect(() => {
+    const el = plotRef.current
+    if (!el) return
+    const ro = new ResizeObserver(([entry]) => {
+      setW(Math.max(280, Math.round(entry.contentRect.width)))
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
   const hasKey = site.twelveData.apiKey.length > 0
   const cacheKey = `${active}:${range}`
   const meta = RANGES.find((r) => r.key === range)!
@@ -117,13 +129,13 @@ function MarketChart() {
       yTicks: ticksY,
       xTicks: ticksX,
     }
-  }, [data, range])
+  }, [data, range, PLOT_W, PLOT_H])
 
   const delta = ((data[data.length - 1].value - data[0].value) / data[0].value) * 100
   const up = delta >= 0
   const last = points[points.length - 1]
 
-  const onMove = (e: React.MouseEvent<SVGSVGElement>) => {
+  const onMove = (e: React.PointerEvent<SVGSVGElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const mx = ((e.clientX - rect.left) / rect.width) * W
     const idx = Math.round(((mx - M.left) / PLOT_W) * (data.length - 1))
@@ -187,12 +199,13 @@ function MarketChart() {
         </span>
       </div>
 
-      <div className="px-2 pt-4 pb-1 sm:px-4">
+      <div ref={plotRef} className="px-2 pt-4 pb-1 sm:px-4">
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="w-full cursor-crosshair"
-          onMouseMove={onMove}
-          onMouseLeave={() => setHover(null)}
+          className="w-full cursor-crosshair touch-pan-y"
+          onPointerMove={onMove}
+          onPointerDown={onMove}
+          onPointerLeave={() => setHover(null)}
         >
           <defs>
             <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
