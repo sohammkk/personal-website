@@ -60,12 +60,16 @@ function Keeper({ phase, dive }: { phase: Phase; dive: Dive }) {
   return (
     // Outer group: pure translation (no origin headaches in SVG)
     <motion.g
-      initial={false}
+      initial={{ x: 0, y: 0 }}
       animate={diving ? { x: dive.x, y: dive.y } : { x: [0, -44, 0, 44, 0], y: 0 }}
       transition={
         diving
           ? { type: 'spring', stiffness: 320, damping: 20, mass: 0.8 }
-          : { duration: 4.2, repeat: Infinity, ease: 'easeInOut' }
+          : {
+              x: { duration: 4.2, repeat: Infinity, ease: 'easeInOut' },
+              // snap back onto the goal line quickly instead of drifting down over the 4.2s loop
+              y: { duration: 0.3, ease: 'easeOut' },
+            }
       }
     >
       {/* Inner group: rotation around the keeper's feet (relative origin, robust for SVG) */}
