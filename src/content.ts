@@ -87,8 +87,10 @@ export const ui: Record<string, Localized> = {
   // Penalty-kick unlock game
   penaltyCmd: { en: '$ ./unlock-portfolio', de: '$ ./portfolio-entsperren' },
   penaltyTitle: { en: 'beat the keeper to enter', de: 'triff, um die Seite zu betreten' },
-  penaltyHint: { en: 'click (or tap) anywhere in the goal to shoot', de: 'klicke (oder tippe) irgendwo ins Tor, um zu schießen' },
+  penaltyHint: { en: 'click (or tap) to shoot', de: 'klicke (oder tippe) zum Schießen' },
   penaltySaved: { en: 'saved! try again…', de: 'gehalten! versuch’s nochmal…' },
+  penaltyPost: { en: 'off the post! so close… try again', de: 'Pfosten! so knapp… versuch’s nochmal' },
+  penaltyWide: { en: 'off target! try again…', de: 'daneben! versuch’s nochmal…' },
   penaltyGoal: { en: 'GOAL!', de: 'TOR!' },
   penaltyUnlocking: { en: 'access granted — loading portfolio…', de: 'Zugriff gewährt — Portfolio wird geladen…' },
   penaltySkip: { en: 'skip the shootout →', de: 'Elfmeter überspringen →' },

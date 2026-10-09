@@ -4,7 +4,7 @@ import { useApp } from '../AppContext'
 import { penaltyFacts } from '../content'
 
 type Zone = 'left' | 'center' | 'right'
-type Phase = 'ready' | 'shooting' | 'saved' | 'scored'
+type Phase = 'ready' | 'shooting' | 'saved' | 'post' | 'wide' | 'scored'
 
 const ZONES: Zone[] = ['left', 'center', 'right']
 const KEEPER_DIVE_X: Record<Zone, number> = { left: -82, center: 0, right: 82 }
@@ -16,9 +16,32 @@ interface Dive {
   rot: number
 }
 
-// Goal mouth (SVG viewBox coords)
+// Goal mouth (SVG viewBox coords) — used for the keeper's reach
 const GOAL = { left: 86, right: 314, top: 86, bottom: 198 }
 const BALL_START = { x: 200, y: 246 }
+// Goal frame centre lines (posts + crossbar), drawn with a 6-unit stroke
+const FRAME = { left: 74, right: 326, bar: 74, ground: 210 }
+// Shots landing within this distance of the frame's centre line hit the woodwork
+const POST_HIT = 7
+// Clickable area: the goal plus a margin around it (can't shoot into the ground)
+const SHOT_ZONE = { left: 20, right: 380, top: 30, bottom: FRAME.ground } // spans the ground line's width
+
+type Outcome = 'post' | 'wide' | 'inside'
+
+function classifyShot(x: number, y: number): Outcome {
+  const onLeftPost = Math.abs(x - FRAME.left) <= POST_HIT && y >= FRAME.bar - POST_HIT
+  const onRightPost = Math.abs(x - FRAME.right) <= POST_HIT && y >= FRAME.bar - POST_HIT
+  const onBar = Math.abs(y - FRAME.bar) <= POST_HIT && x >= FRAME.left - POST_HIT && x <= FRAME.right + POST_HIT
+  if (onLeftPost || onRightPost || onBar) return 'post'
+  if (x < FRAME.left || x > FRAME.right || y < FRAME.bar) return 'wide'
+  return 'inside'
+}
+
+/** Where the ball deflects to after hitting the woodwork */
+function rebound(x: number, y: number) {
+  if (Math.abs(y - FRAME.bar) <= POST_HIT) return { x: x + (x < 200 ? -24 : 24), y: 22 } // over the bar
+  return x < 200 ? { x: 36, y: 232 } : { x: 364, y: 232 } // back out off the post
+}
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v))
@@ -104,11 +127,13 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
   const [attempts, setAttempts] = useState(0)
   const timers = useRef<number[]>([])
 
-  const shoot = (e: React.MouseEvent<SVGSVGElement>) => {
+  const shoot = (e: React.MouseEvent<HTMLDivElement>) => {
     if (phase !== 'ready') return
+    // map the click inside the shot-zone div back to SVG viewBox coords
     const rect = e.currentTarget.getBoundingClientRect()
-    const x = clamp(((e.clientX - rect.left) / rect.width) * 400, GOAL.left, GOAL.right)
-    const y = clamp(((e.clientY - rect.top) / rect.height) * 280, GOAL.top, GOAL.bottom)
+    const x = SHOT_ZONE.left + ((e.clientX - rect.left) / rect.width) * (SHOT_ZONE.right - SHOT_ZONE.left)
+    const y = SHOT_ZONE.top + ((e.clientY - rect.top) / rect.height) * (SHOT_ZONE.bottom - SHOT_ZONE.top)
+    const outcome = classifyShot(x, y)
 
     const keeper = ZONES[Math.floor(Math.random() * ZONES.length)]
 
@@ -121,27 +146,39 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
     // Shots at his body are saved; corners are (almost) always in.
     const keeperX = 200 + diveX
     const keeperY = 178 + diveY
-    const saved = ((x - keeperX) / 52) ** 2 + ((y - keeperY) / 56) ** 2 < 1
+    const gx = clamp(x, GOAL.left, GOAL.right)
+    const gy = clamp(y, GOAL.top, GOAL.bottom)
+    const saved = outcome === 'inside' && ((gx - keeperX) / 52) ** 2 + ((gy - keeperY) / 56) ** 2 < 1
 
     setDive({
       x: diveX,
       y: diveY,
       rot: KEEPER_DIVE_ROT[keeper] + (keeper === 'center' ? 0 : Math.random() * 18 - 9),
     })
-    setTarget(saved ? { x: keeperX, y: Math.max(y, 120) } : { x, y })
+    setTarget(saved ? { x: keeperX, y: Math.max(gy, 120) } : { x, y })
     setPhase('shooting')
+
+    const retry = () =>
+      timers.current.push(
+        window.setTimeout(() => {
+          setAttempts((a) => a + 1)
+          setTarget(BALL_START)
+          setPhase('ready')
+        }, 1200),
+      )
 
     timers.current.push(
       window.setTimeout(() => {
         if (saved) {
           setPhase('saved')
-          timers.current.push(
-            window.setTimeout(() => {
-              setAttempts((a) => a + 1)
-              setTarget(BALL_START)
-              setPhase('ready')
-            }, 1200),
-          )
+          retry()
+        } else if (outcome === 'post') {
+          setTarget(rebound(x, y))
+          setPhase('post')
+          retry()
+        } else if (outcome === 'wide') {
+          setPhase('wide')
+          retry()
         } else {
           setPhase('scored')
           timers.current.push(window.setTimeout(onUnlock, 1600))
@@ -160,13 +197,8 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
         </p>
         <p className="mt-2 font-mono text-xs text-neutral-500">{t('penaltyHint')}</p>
 
-        <svg
-          viewBox="0 0 400 280"
-          onClick={shoot}
-          role="button"
-          aria-label={t('penaltyHint')}
-          className={`mt-6 w-full select-none ${phase === 'ready' ? 'cursor-crosshair' : 'cursor-default'}`}
-        >
+        <div className="relative mt-6">
+        <svg viewBox="0 0 400 280" className="block w-full select-none" aria-hidden>
           {/* ground */}
           <line x1="20" y1="210" x2="380" y2="210" stroke="currentColor" strokeWidth="2" opacity="0.25" />
           {/* penalty spot */}
@@ -188,12 +220,12 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
             strokeWidth="6"
             strokeLinecap="round"
             fill="none"
-            animate={phase === 'scored' ? { x: [0, -2, 2, -1, 0] } : undefined}
+            animate={phase === 'scored' || phase === 'post' ? { x: [0, -2, 2, -1, 0] } : undefined}
             transition={{ duration: 0.4 }}
           >
-            <line x1="74" y1="210" x2="74" y2="74" />
-            <line x1="326" y1="210" x2="326" y2="74" />
-            <line x1="71" y1="74" x2="329" y2="74" />
+            <line x1={FRAME.left} y1={FRAME.ground} x2={FRAME.left} y2={FRAME.bar} />
+            <line x1={FRAME.right} y1={FRAME.ground} x2={FRAME.right} y2={FRAME.bar} />
+            <line x1={FRAME.left - 3} y1={FRAME.bar} x2={FRAME.right + 3} y2={FRAME.bar} />
           </motion.g>
 
           {/* keeper */}
@@ -221,7 +253,7 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
               textAnchor="middle"
               dominantBaseline="central"
               fontSize="30"
-              animate={phase === 'shooting' || phase === 'scored' ? { rotate: 360 } : { rotate: 0 }}
+              animate={phase !== 'ready' ? { rotate: 360 } : { rotate: 0 }}
               transition={{ duration: 0.6 }}
               style={{ transformOrigin: `${BALL_START.x}px ${BALL_START.y}px` }}
             >
@@ -249,10 +281,29 @@ export function PenaltyGame({ onUnlock }: { onUnlock: () => void }) {
           )}
         </svg>
 
+        {/* interactive shot zone: the goal plus a limited margin around it */}
+        <div
+          onClick={shoot}
+          role="button"
+          aria-label={t('penaltyHint')}
+          className={`absolute rounded-lg border border-dashed border-transparent transition-colors ${
+            phase === 'ready' ? 'hover:border-accent/30 cursor-crosshair' : 'cursor-default'
+          }`}
+          style={{
+            left: `${(SHOT_ZONE.left / 400) * 100}%`,
+            top: `${(SHOT_ZONE.top / 280) * 100}%`,
+            width: `${((SHOT_ZONE.right - SHOT_ZONE.left) / 400) * 100}%`,
+            height: `${((SHOT_ZONE.bottom - SHOT_ZONE.top) / 280) * 100}%`,
+          }}
+        />
+        </div>
+
         {/* status line — fixed height to avoid layout shift */}
         <div className="mt-2 flex h-6 items-center font-mono text-xs">
           <span className="text-neutral-500">
             {phase === 'saved' && t('penaltySaved')}
+            {phase === 'post' && <span className="text-red-400">{t('penaltyPost')}</span>}
+            {phase === 'wide' && <span className="text-red-400">{t('penaltyWide')}</span>}
             {phase === 'scored' && <span className="text-accent">{t('penaltyUnlocking')}</span>}
           </span>
         </div>
