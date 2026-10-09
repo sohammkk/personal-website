@@ -18,12 +18,14 @@ export function CvPage() {
   return (
     <main className="pt-16">
       {/* CV header */}
-      <section className="hero-grid border-b border-neutral-200 dark:border-neutral-800">
+      <section className="hero-grid relative overflow-hidden border-b border-neutral-200 dark:border-neutral-800">
+        {/* accent glow */}
+        <div className="accent-glow" aria-hidden />
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-5xl px-6 py-20"
+          className="relative mx-auto max-w-5xl px-6 py-20"
         >
           <p className="text-accent mb-3 font-mono text-sm tracking-widest">
             ~/{site.name.split(' ')[0].toLowerCase()}/cv

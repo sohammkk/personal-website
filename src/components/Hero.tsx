@@ -20,7 +20,7 @@ export function Hero() {
   return (
     <section id="top" className="hero-grid relative flex min-h-screen flex-col justify-center overflow-hidden">
       {/* accent glow */}
-      <div className="bg-accent/10 pointer-events-none absolute -top-32 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full blur-3xl" aria-hidden />
+      <div className="accent-glow" aria-hidden />
 
       <motion.div
         variants={container}
