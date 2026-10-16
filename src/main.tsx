@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 import { AppProvider } from './AppContext'
+import { PlayerProvider } from './PlayerContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppProvider>
-      <App />
+      <PlayerProvider>
+        <App />
+      </PlayerProvider>
     </AppProvider>
   </StrictMode>,
 )

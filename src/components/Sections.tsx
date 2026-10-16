@@ -17,15 +17,29 @@ import { IPod } from './IPod'
 
 export function About() {
   const { t } = useApp()
+  const reduce = useReducedMotion()
+  // Title and text sit in the left column, vertically centered against the iPod,
+  // so there is no big gap between the heading and the content.
   return (
-    <Section id="about" title={t('aboutTitle')}>
+    <section id="about" className="mx-auto max-w-5xl px-6 py-20">
       <div className="grid items-center gap-12 md:grid-cols-[1.4fr_1fr]">
-        <p className="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-          {t('aboutText')}
-        </p>
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="font-display mb-6 text-3xl font-bold tracking-tight sm:text-4xl">
+            <span className="text-accent mr-2 font-mono text-xl">/</span>
+            {t('aboutTitle')}
+          </h2>
+          <p className="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
+            {t('aboutText')}
+          </p>
+        </motion.div>
         <IPod />
       </div>
-    </Section>
+    </section>
   )
 }
 

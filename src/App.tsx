@@ -5,6 +5,7 @@ import { Hero } from './components/Hero'
 import { PenaltyGame } from './components/PenaltyGame'
 import { SideQuests } from './components/SideQuests'
 import { CvPage } from './components/CvPage'
+import { MiniPlayer } from './components/MiniPlayer'
 import { About, Contact, CvCta, Footer } from './components/Sections'
 
 type Route = 'home' | 'cv'
@@ -72,6 +73,7 @@ export default function App() {
         <CvPage />
       )}
       <Footer onReplay={route === 'home' ? replay : undefined} />
+      <MiniPlayer />
     </>
   )
 }
