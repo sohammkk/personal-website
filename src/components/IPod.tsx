@@ -244,7 +244,7 @@ export function IPod() {
         />
       </div>
       </motion.div>
-      <p className="mt-3 text-center font-mono text-[11px] leading-relaxed tracking-wide whitespace-pre-line text-neutral-400 dark:text-neutral-600">
+      <p className="mt-3 text-center font-mono text-[14px] leading-relaxed tracking-wide whitespace-pre-line text-neutral-500 dark:text-neutral-500">
         {t('ipodHoverHint')}
       </p>
     </div>
