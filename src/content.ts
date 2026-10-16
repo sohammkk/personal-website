@@ -20,11 +20,21 @@ export const site = {
     en: '/SohamKumthekar_CV_English.pdf',
     de: 'https://assets.zyrosite.com/YrDW0JpewRCOjxNQ/soham_germancv-dmk8H2X17QeswQby.pdf',
   },
-  // Last.fm powers the iPod widget (Apple Music can scrobble to Last.fm).
+  // Last.fm supplies the song metadata (title/artist) for the iPod; the key is public-read only.
   lastfm: {
     username: import.meta.env.VITE_LASTFM_USERNAME ?? '',
     apiKey: import.meta.env.VITE_LASTFM_API_KEY ?? '',
   },
+  // iPod playlist: put the mp3 files in /public/music. Slot N of the Last.fm
+  // recent tracks (newest first) is played from the Nth file below. The title/artist
+  // here are only a fallback when Last.fm is unreachable or not configured.
+  ipodTracks: [
+    { title: 'Song One', artist: 'Artist One', file: '/music/track1.mp3' },
+    { title: 'Song Two', artist: 'Artist Two', file: '/music/track2.mp3' },
+    { title: 'Song Three', artist: 'Artist Three', file: '/music/track3.mp3' },
+    { title: 'Song Four', artist: 'Artist Four', file: '/music/track4.mp3' },
+    { title: 'Song Five', artist: 'Artist Five', file: '/music/track5.mp3' },
+  ] as { title: string; artist: string; file: string }[],
   // Twelve Data powers the live stock chart in the side quests.
   twelveData: {
     apiKey: import.meta.env.VITE_TWELVEDATA_API_KEY ?? '',
@@ -78,8 +88,13 @@ export const ui: Record<string, Localized> = {
   contactTitle: { en: "Get in touch!", de: 'Komm in Kontakt!' },
 
   nowPlaying: { en: 'Now playing', de: 'Läuft gerade' },
-  lastPlayed: { en: 'Last played', de: 'Zuletzt gehört' },
-  ipodHoverHint: { en: 'hover or click me ♪', de: 'hover oder klick mich ♪' },
+  paused: { en: 'Paused', de: 'Pausiert' },
+  ipodMenuTitle: { en: 'Recently played', de: 'Zuletzt gehört' },
+  ipodMissing: { en: 'audio file not found', de: 'Audiodatei nicht gefunden' },
+  ipodHoverHint: {
+    en: 'some current favorite songs\npress MENU to pick a song, ▶ to play ♪',
+    de: 'meine aktuellen Lieblingssongs\nMENU zum Auswählen, ▶ zum Abspielen ♪',
+  },
   present: { en: 'Present', de: 'Heute' },
   viewCert: { en: 'View certificate', de: 'Zertifikat ansehen' },
   footerRights: { en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.' },
