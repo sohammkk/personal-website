@@ -98,7 +98,6 @@ export const ui: Record<string, Localized> = {
   present: { en: 'Present', de: 'Heute' },
   viewCert: { en: 'View certificate', de: 'Zertifikat ansehen' },
   footerRights: { en: 'All rights reserved.', de: 'Alle Rechte vorbehalten.' },
-  builtWith: { en: 'Built with React, Tailwind & Framer Motion', de: 'Erstellt mit React, Tailwind & Framer Motion' },
   // Penalty-kick unlock game
   penaltyCmd: { en: '$ ./unlock-portfolio', de: '$ ./portfolio-entsperren' },
   penaltyTitle: { en: 'beat the keeper to enter', de: 'triff, um die Seite zu betreten' },
