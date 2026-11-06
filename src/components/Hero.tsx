@@ -19,7 +19,7 @@ export function Hero() {
 
   return (
     <section id="top" className="relative flex min-h-screen flex-col justify-center overflow-hidden">
-      <div className="scenery scenery-meadow" aria-hidden />
+      <div className="scenery scenery-full scenery-meadow" aria-hidden />
 
       <motion.div
         variants={container}

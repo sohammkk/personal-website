@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { FileText, Github, Linkedin, Mail } from 'lucide-react'
+import { ArrowDown, FileText, Github, Linkedin, Mail } from 'lucide-react'
 import { useApp } from '../AppContext'
 import { site } from '../content'
 import {
@@ -16,15 +16,15 @@ export function CvPage() {
   const reduce = useReducedMotion()
 
   return (
-    <main className="pt-16">
+    <main>
       {/* CV header */}
-      <section className="relative overflow-hidden border-b border-neutral-200 dark:border-neutral-800">
-        <div className="scenery scenery-summit" aria-hidden />
+      <section className="relative flex min-h-screen flex-col overflow-hidden sm:justify-center">
+        <div className="scenery scenery-full scenery-summit" aria-hidden />
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto max-w-5xl px-6 py-20"
+          className="relative mx-auto w-full max-w-5xl px-6 pt-28 pb-48 sm:pt-16 sm:pb-24"
         >
           <p className="mb-3 font-mono text-sm tracking-widest text-emerald-700 dark:text-accent">
             ~/{site.name.split(' ')[0].toLowerCase()}/cv
@@ -74,6 +74,18 @@ export function CvPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* A button, because a #experience link would change the hash and leave the CV route. */}
+        <motion.button
+          type="button"
+          aria-label="Scroll down"
+          onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 cursor-pointer text-neutral-700 dark:text-neutral-300"
+          animate={reduce ? undefined : { y: [0, 8, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity }}
+        >
+          <ArrowDown size={20} />
+        </motion.button>
       </section>
 
       <Experience />
