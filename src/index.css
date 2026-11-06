@@ -36,6 +36,79 @@ body {
   background-image: radial-gradient(circle, rgb(255 255 255 / 0.08) 1px, transparent 1px);
 }
 
+/* Pixel-art scenery behind page headers. Each cell is exactly 2 CSS px (3 on very
+   large screens): a whole-number scale keeps the dither crisp, so these images are
+   positioned, never stretched to cover. Black is the page's own neutral-950, and
+   inverting turns it into the light theme's page colour, so the art melts into both. */
+.scenery {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+html:not(.dark) .scenery {
+  filter: invert(1);
+}
+
+/* Full-screen scene, shared by the home and CV heroes. On short screens the scene
+   slides down so its top clears the nav. */
+.scenery-full {
+  background-size: 460px 1040px;
+  background-position: center bottom;
+}
+.scenery-full::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 90px;
+  background: linear-gradient(to top, #0a0a0a, rgb(10 10 10 / 0));
+}
+@media (min-width: 640px) {
+  .scenery-full {
+    background-size: 1600px 1000px;
+    background-position: 86% bottom;
+  }
+}
+@media (min-width: 1024px) {
+  .scenery-full {
+    background-position: center calc(100% + max(0px, (900px - 100vh) * 0.85));
+  }
+}
+@media (min-width: 1601px), (min-width: 640px) and (min-height: 1001px) {
+  .scenery-full {
+    background-size: 2400px 1500px;
+    background-position: center bottom;
+  }
+}
+
+.scenery-meadow {
+  background-image: url('/scenery/meadow-phone.png');
+}
+@media (min-width: 640px) {
+  .scenery-meadow {
+    background-image: url('/scenery/meadow-desktop.png');
+  }
+}
+
+/* The light theme uses an ink redraw, because a straight inversion of snow and shadow
+   looks like a photo negative. It is stored inverted so the shared filter above turns
+   it the right way round. */
+.scenery-summit {
+  background-image: url('/scenery/summit-phone.png');
+}
+html:not(.dark) .scenery-summit {
+  background-image: url('/scenery/summit-ink-phone.png');
+}
+@media (min-width: 640px) {
+  .scenery-summit {
+    background-image: url('/scenery/summit-desktop.png');
+  }
+  html:not(.dark) .scenery-summit {
+    background-image: url('/scenery/summit-ink-desktop.png');
+  }
+}
+
 /* Soft accent glow at the top of page headers. A radial gradient (instead of a
    blurred element) scales with the viewport and renders reliably on mobile. */
 .accent-glow {
