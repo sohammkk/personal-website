@@ -18,21 +18,20 @@ export function Hero() {
   const [first, last] = site.name.split(' ')
 
   return (
-    <section id="top" className="hero-grid relative flex min-h-screen flex-col justify-center overflow-hidden">
-      {/* accent glow */}
-      <div className="accent-glow" aria-hidden />
+    <section id="top" className="relative flex min-h-screen flex-col justify-center overflow-hidden">
+      <div className="scenery scenery-meadow" aria-hidden />
 
       <motion.div
         variants={container}
         initial={reduce ? false : 'hidden'}
         animate="show"
-        className="relative mx-auto grid w-full max-w-5xl items-center gap-10 px-6 pt-36 pb-24 lg:grid-cols-[1.3fr_1fr] lg:pt-16 lg:pb-0"
+        className="relative mx-auto grid w-full max-w-5xl items-center gap-8 px-6 pt-28 pb-48 sm:gap-10 sm:pt-36 sm:pb-24 lg:grid-cols-[1.3fr_1fr] lg:pt-16 lg:pb-0"
       >
         <div>
-          <motion.p variants={item} className="text-accent mb-3 font-mono text-sm tracking-widest opacity-80">
+          <motion.p variants={item} className="mb-3 font-mono text-sm tracking-widest text-emerald-700 dark:text-accent">
             ~/{site.name.split(' ')[0].toLowerCase()}
           </motion.p>
-          <motion.p variants={item} className="text-accent mb-4 font-mono text-sm tracking-widest uppercase">
+          <motion.p variants={item} className="mb-4 font-mono text-sm tracking-widest text-emerald-700 uppercase dark:text-accent">
             {t('heroHello')}
           </motion.p>
 
@@ -45,7 +44,7 @@ export function Hero() {
             {last}
           </motion.h1>
 
-          <motion.div variants={item} className="mt-4 flex flex-col gap-1 font-mono text-sm text-neutral-500">
+          <motion.div variants={item} className="mt-4 flex flex-col gap-1 font-mono text-sm text-neutral-700 dark:text-neutral-300">
             <span>→ {t('heroRole1')}</span>
             <span>→ {t('heroRole2')}</span>
           </motion.div>
@@ -61,7 +60,7 @@ export function Hero() {
               href={site.cv[lang]}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold transition-all hover:scale-[1.03] hover:border-neutral-500 active:scale-[0.98] dark:border-neutral-700 dark:hover:border-neutral-400"
+              className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-stone-100/60 px-6 py-3 text-sm font-semibold backdrop-blur-sm transition-all hover:scale-[1.03] hover:border-black/50 active:scale-[0.98] dark:border-white/30 dark:bg-neutral-950/50 dark:hover:border-white/50"
             >
               <FileText size={16} /> {t('heroCv')}
             </a>
@@ -71,14 +70,14 @@ export function Hero() {
         {/* personal photo (placeholder until one is set in content.ts) */}
         <motion.div
           variants={item}
-          className="relative mx-auto aspect-square w-full max-w-xs overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900"
+          className="relative aspect-square w-full max-w-[200px] overflow-hidden rounded-[20px] border border-black/15 bg-stone-100/80 shadow-[0_24px_60px_rgb(0_0_0/0.14)] backdrop-blur-md sm:mx-auto sm:max-w-xs sm:rounded-3xl dark:border-white/15 dark:bg-neutral-950/60 dark:shadow-[0_24px_60px_rgb(0_0_0/0.55)]"
         >
           {site.photo ? (
             <img src={site.photo} alt={site.name} className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-neutral-400 dark:text-neutral-600">
-              <User size={40} strokeWidth={1.2} />
-              <span className="font-mono text-xs">{'// photo coming soon'}</span>
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-neutral-700 dark:text-neutral-300">
+              <User className="size-7 sm:size-10" strokeWidth={1.2} />
+              <span className="font-mono text-[11px] sm:text-xs">{'// photo coming soon'}</span>
             </div>
           )}
         </motion.div>
@@ -87,7 +86,7 @@ export function Hero() {
       <motion.a
         href="#about"
         aria-label="Scroll down"
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-neutral-400"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-neutral-700 dark:text-neutral-300"
         animate={reduce ? undefined : { y: [0, 8, 0] }}
         transition={{ duration: 1.6, repeat: Infinity }}
       >
