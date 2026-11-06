@@ -52,7 +52,7 @@ export function Hero() {
           <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
             <a
               href={"#contact"}
-              className="bg-accent hover:bg-accent-dim inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-stone-100/60 px-6 py-3 text-sm font-semibold backdrop-blur-sm transition-all hover:scale-[1.03] hover:border-black/50 active:scale-[0.98] dark:border-white/30 dark:bg-neutral-950/50 dark:hover:border-white/50"
             >
               <Mail size={16} /> {t('heroCta')}
             </a>
