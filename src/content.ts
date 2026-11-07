@@ -10,15 +10,13 @@ export const site = {
   email: 'sohamkumthekarde@gmail.com',
   phone: '+49 176599 69725',
   location: 'Duisburg, Germany',
-  // Path to a photo in /public (e.g. '/me.jpg') or a full URL.
-  photo: '',
   socials: {
     github: 'https://github.com/sohammkk',
     linkedin: 'https://www.linkedin.com/in/soham-kumthekar-b95aba260/',
   },
   cv: {
     en: '/SohamKumthekar_CV_English.pdf',
-    de: 'https://assets.zyrosite.com/YrDW0JpewRCOjxNQ/soham_germancv-dmk8H2X17QeswQby.pdf',
+    de: '/SohamKumthekar_CV_German.pdf',
   },
   // Last.fm supplies the song metadata (title/artist) for the iPod; the key is public-read only.
   lastfm: {
