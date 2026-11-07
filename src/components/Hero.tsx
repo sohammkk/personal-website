@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowDown, FileText, Mail, User } from 'lucide-react'
+import { ArrowDown, FileText, Mail } from 'lucide-react'
 import { useApp } from '../AppContext'
 import { site } from '../content'
 
@@ -25,7 +25,7 @@ export function Hero() {
         variants={container}
         initial={reduce ? false : 'hidden'}
         animate="show"
-        className="relative mx-auto grid w-full max-w-5xl items-center gap-8 px-6 pt-28 pb-48 sm:gap-10 sm:pt-36 sm:pb-24 lg:grid-cols-[1.3fr_1fr] lg:pt-16 lg:pb-0"
+        className="hero-copy relative mx-auto w-full max-w-5xl px-6 pt-28 pb-[424px] sm:pt-36 sm:pb-[456px] lg:w-fit lg:max-w-none lg:pt-12 lg:pb-24"
       >
         <div>
           <motion.p variants={item} className="mb-3 font-mono text-sm tracking-widest text-emerald-700 dark:text-accent">
@@ -66,21 +66,6 @@ export function Hero() {
             </a>
           </motion.div>
         </div>
-
-        {/* personal photo (placeholder until one is set in content.ts) */}
-        <motion.div
-          variants={item}
-          className="relative aspect-square w-full max-w-[200px] overflow-hidden rounded-[20px] border border-black/15 bg-stone-100/80 shadow-[0_24px_60px_rgb(0_0_0/0.14)] backdrop-blur-md sm:mx-auto sm:max-w-xs sm:rounded-3xl dark:border-white/15 dark:bg-neutral-950/60 dark:shadow-[0_24px_60px_rgb(0_0_0/0.55)]"
-        >
-          {site.photo ? (
-            <img src={site.photo} alt={site.name} className="h-full w-full object-cover" />
-          ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-neutral-700 dark:text-neutral-300">
-              <User className="size-7 sm:size-10" strokeWidth={1.2} />
-              <span className="font-mono text-[11px] sm:text-xs">{'// photo coming soon'}</span>
-            </div>
-          )}
-        </motion.div>
       </motion.div>
 
       <motion.a

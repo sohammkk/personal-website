@@ -82,6 +82,21 @@ html:not(.dark) .scenery {
   }
 }
 
+/* On desktop the home hero's copy is centred in the open sky between the left-hand
+   flowers and the moon, a band that sits left of the viewport centre. The offsets
+   follow the scene's size breakpoints above (the larger scene is 1.5x). */
+@media (min-width: 1024px) {
+  .hero-copy {
+    right: 155px;
+  }
+}
+@media (min-width: 1601px), (min-width: 1024px) and (min-height: 1001px) {
+  .hero-copy {
+    right: 260px;
+    top: -40px;
+  }
+}
+
 .scenery-meadow {
   background-image: url('/scenery/meadow-phone.png');
 }
